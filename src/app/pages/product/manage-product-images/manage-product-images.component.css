@@ -1,0 +1,16 @@
+.custom-dropzone {
+  height: 250px;
+  width: 100%;
+  background: white;
+  color: black;
+  border: 5px dashed rgb(235, 79, 79);
+  border-radius: 5px;
+  font-size: 20px;
+}
+
+.center-cropped {
+  object-fit: cover;
+  max-height: 220px;
+  object-position: center;
+  width: 100%;
+}

@@ -1,0 +1,128 @@
+<div class="header bg-gradient-danger py-7 py-lg-8">
+  <div class="container">
+    <div class="header-body text-center mb-7">
+      <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-6">
+          <h1 class="text-white">Login Page</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="separator separator-bottom separator-skew zindex-100">
+    <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <polygon class="fill-default" points="2560 0 2560 100 0 100"></polygon>
+    </svg>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container mt--8 pb-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-5 col-md-7">
+      <div class="card bg-secondary shadow border-0">
+        <div class="card-body px-lg-5 py-lg-5">
+          <form role="form" (ngSubmit)="submitLogin()"
+                novalidate [formGroup]="emailLoginDto">
+            <div class="form-group mb-3">
+              <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                </div>
+                <input formControlName="email" name="email"
+                       class="form-control" placeholder="Email" type="email"
+                       [class.is-invalid]="Email.invalid && Email.touched">
+              </div>
+              <div *ngIf="(Email.invalid && Email.touched) || Email.dirty">
+                <small *ngIf="Email.errors?.required" class="text-danger">Email is required</small>
+                <small *ngIf="Email.errors?.pattern" class="text-danger">Please provide a valid email address</small>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                </div>
+                <input formControlName="password" class="form-control" placeholder="Password" type="password">
+              </div>
+            </div>
+            <div class="text-center">
+              <button [disabled]="emailLoginDto.invalid" type="submit" class="btn btn-primary my-4">Sign in</button>
+            </div>
+          </form>
+          <div class="row mt-2">
+            <div class="col-6">
+              <a (click)="helperService.openDialog(forgotPass)" class="nav-link" mat-button>Forgot Your Password?</a>
+            </div>
+            <div class="col-6">
+              <a class="nav-link" routerLink="/auth/register-admin" mat-button>Or create a new account</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="large" color="#fff" type="ball-spin-clockwise"
+>
+  <p style="font-size: 20px; color: white">
+    {{helperService.state}}
+  </p>
+</ngx-spinner>
+<ng-template #errorTemplate>
+  <app-show-error-dialog
+                         [error]="helperService.error"></app-show-error-dialog>
+</ng-template>
+<ng-template #forgotPass>
+  <h2 mat-dialog-title>
+    Enter Your Email to Send Forgot Password Request
+  </h2>
+  <mat-dialog-content class="mat-typography" style="width: 500px; height: auto">
+    <div *ngIf="!isSent" class="row mb-1 mt-1 justify-content-center">
+      <form [formGroup]="emailRequestForm" novalidate>
+        <div class="form-group mb-3">
+          <div class="input-group input-group-alternative">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+            </div>
+            <input formControlName="email" name="email"
+                   class="form-control" placeholder="Email" type="email"
+                   [class.is-invalid]="ForgotRequestEmail.invalid && ForgotRequestEmail.touched">
+          </div>
+          <div *ngIf="(ForgotRequestEmail.invalid && ForgotRequestEmail.touched) || ForgotRequestEmail.dirty">
+            <small *ngIf="ForgotRequestEmail.errors?.required" class="text-danger">Email is required</small>
+            <small *ngIf="ForgotRequestEmail.errors?.pattern" class="text-danger">Please provide a valid email
+              address</small>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div *ngIf="message && isSent" class="row mb-1 mt-1 justify-content-center">
+      <p class="lead text-warning">
+        {{message}}
+      </p>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button *ngIf="!isSent" (click)="sendEmailForgotPassword()" [disabled]="emailRequestForm.invalid" mat-raised-button
+            color="primary"
+            style="width: 150px">
+      Send Request
+    </button>
+    <button style="width: 120px" (click)="helperService.hideDialog()"
+            class="btn btn-outline-warning pull-right ml-1">
+      Close
+    </button>
+  </mat-dialog-actions>
+  <ngx-spinner
+    bdColor="rgba(51,51,51,0.8)"
+    size="small"
+    color="#9344d4d"
+    type="ball-spin-clockwise">
+    <p style="font-size: 20px; color: white">
+      Sending Request...
+    </p>
+  </ngx-spinner>
+</ng-template>

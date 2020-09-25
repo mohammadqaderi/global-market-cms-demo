@@ -1,0 +1,92 @@
+<h2 mat-dialog-title>
+  Update Product
+</h2>
+<mat-dialog-content class="mat-typography" style="width: 900px; height: auto">
+  <form [formGroup]="updateProductDto" novalidate>
+
+    <div class="row ">
+      <div class="col-lg-8">
+        <div class="form-group">
+          <label for="name" class="form-control-label"> Name</label>
+          <input class="form-control" type="text" id="name" formControlName="name" placeholder="Ex. T-shirt">
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="form-group">
+          <label for="quantity" class="form-control-label"> Quantity</label>
+          <input class="form-control" type="number" id="quantity" formControlName="quantity" placeholder="Ex. 10">
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-between">
+      <div class="col-lg-8">
+        <div class="form-group">
+          <label for="desc" class="form-control-label"> Description</label>
+          <textarea class="form-control" type="text" id="desc" formControlName="description"
+                    placeholder="This product is amazing">
+          </textarea>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="form-group">
+          <label for="price" class="form-control-label"> Price</label>
+          <input class="form-control" type="number" id="price" formControlName="price" placeholder="Ex. 40.99">
+        </div>
+      </div>
+    </div>
+  </form>
+  <hr class="my-3">
+  <div class="row">
+    <div class="col-md-8">
+      <mat-form-field class="example-full-width">
+        <mat-label> Reference Product</mat-label>
+        <mat-select multiple [(ngModel)]="helperService.selectedReferences">
+          <mat-option [value]="{id: ref.id, name: ref.name}"
+                      *ngFor="let ref of helperService.referenceItems; let i = index">
+            {{ref.name}}
+          </mat-option>
+        </mat-select>
+        <mat-hint>This Field is optional</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <button [disabled]="helperService.selectedReferences.length === 0
+|| helperService.referenceItems.length === 0"
+              (click)="helperService.pushReferences()" class="btn btn btn-primary">
+        Add Reference
+      </button>
+    </div>
+  </div>
+  <div class="row mt-2 justify-content-between">
+    <div class="col-md-4 mt-2 mb-2" *ngFor="let ref of helperService.chosenReferences; let i = index">
+      <span class="badge badge-pill badge-sm badge-dark" style="font-size: 13px; width: 250px; max-width: 250px">
+       {{ref.name}} &nbsp; &nbsp; <i (click)="helperService.removeReference(ref.name)"
+                                     class="fas fa-trash text-danger"
+                                     style="font-size: 13px; cursor: pointer"></i>
+      </span>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button
+    [disabled]="updateProductDto.invalid"
+    (click)="updateProduct()" mat-raised-button color="primary"
+    style="width: 120px;" type="button">
+    Update
+  </button>
+  <button [disabled]="helperService.startLoadingFlag" mat-raised-button color="warn" style="width: 120px;"
+          class="ml-2" (click)="helperService.closeDialog()" type="button">
+    Close
+  </button>
+</mat-dialog-actions>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="large" color="#fff" type="timer"
+>
+  <p style="font-size: 20px; color: white">
+    {{helperService.state}}
+  </p>
+</ngx-spinner>
+<ng-template #errorTemplate>
+  <app-show-error-dialog [error]="helperService.error"></app-show-error-dialog>
+</ng-template>

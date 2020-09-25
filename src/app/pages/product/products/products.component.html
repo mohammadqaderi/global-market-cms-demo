@@ -1,0 +1,168 @@
+<div class="header bg-dark pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <p class=" text-white display-1">
+        Products
+      </p>
+      <p class="text-white text-lg">
+        start creating products and modify the products to be published in the application
+      </p>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--7">
+  <div class="card row ml-1 mr-1 mt-5 mb-5">
+    <div class="card-header">
+        <span class="display-4">
+          Products
+        </span>
+      <button (click)="helperService.openDialog(creationTemp)" class="btn float-right btn-primary ">
+        Add New Product &nbsp; <i class="fas fa-plus-circle"></i>
+      </button>
+    </div>
+    <div class="card-body">
+      <div *ngIf="Products && Products.length === 0" class="row justify-content-center mt-3 mb-3">
+        <h4>
+          No Products Available!
+        </h4>
+      </div>
+        <mat-form-field class="example-full-width">
+          <mat-label>Filter</mat-label>
+          <input matInput (keyup)="helperService.applyFilter(helperService.productDataSource,$event)"
+                 placeholder="Enter Product Name">
+        </mat-form-field>
+        <div class="mat-elevation-z8">
+          <table mat-table [dataSource]="helperService.productDataSource" matSort>
+            <ng-container matColumnDef="id">
+              <th mat-header-cell mat-sort-header *matHeaderCellDef> Id</th>
+              <td mat-cell *matCellDef="let product"> {{product.id}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell mat-sort-header *matHeaderCellDef> Name</th>
+              <td mat-cell *matCellDef="let product"> {{product.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="quantity">
+              <th mat-header-cell mat-sort-header *matHeaderCellDef> Quantity</th>
+              <td mat-cell *matCellDef="let product"> {{product.quantity}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="inStock">
+              <th mat-header-cell mat-sort-header *matHeaderCellDef> In Stock</th>
+              <td mat-cell *matCellDef="let product"> {{product.inStock ? 'Yes' : 'No'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="price">
+              <th mat-header-cell mat-sort-header *matHeaderCellDef> Price</th>
+              <td mat-cell *matCellDef="let product"> {{product.price}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="tags">
+              <th mat-header-cell mat-sort-header *matHeaderCellDef> Tags</th>
+              <td mat-cell *matCellDef="let product">
+                <a *ngFor="let tag of product.productTags" class="badge badge-pill badge-lg  m-1 badge-dark">
+                  {{tag.name}}
+                </a>
+                <a *ngIf="product && product.productTags.length === 0"
+                   class="badge badge-pill badge-sm m-1  badge-dark">
+                  No Tags
+                </a>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="category">
+              <th mat-header-cell mat-sort-header *matHeaderCellDef> Sub Category</th>
+              <td mat-cell *matCellDef="let product">
+              <span *ngIf="Products">
+              {{getSubCategoryName(product.subCategoryId)}}
+            </span></td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef> Actions</mat-header-cell>
+              <mat-cell *matCellDef="let product">
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu>
+                  <button (click)="helperService.openDialog(updateTemp)" mat-menu-item>
+                    Update &nbsp; <i class="far fa-edit text-primary"></i>
+                  </button>
+                  <ng-template #updateTemp>
+                    <app-update-product [product]="product" [store]="store" [helperService]="helperService"
+                                        [products]="Products"
+                                        (change)="refreshProducts()"
+                    ></app-update-product>
+                  </ng-template>
+                  <button (click)="helperService.openDialog(deleteTemplate)"
+                          mat-menu-item>
+                    Delete &nbsp; <i class="fas fa-trash text-danger"></i>
+                  </button>
+                  <ng-template #deleteTemplate>
+                    <div class="modal-body text-center">
+                      <p>Do you want to delete this product?</p>
+                      <p class="text-danger">Note that this product will be entirely removed &nbsp; <i
+                        class="fa fa-exclamation-triangle" aria-hidden="true"></i></p>
+                      <button type="button" (click)="helperService.hideModal(); deleteProduct(product.id)"
+                              class="btn btn-default">Yes
+                      </button>
+                      <button type="button" class="btn btn-primary" (click)="helperService.hideModal()">No</button>
+                    </div>
+                  </ng-template>
+                  <button (click)="helperService.openDialog(imagesTemplate)"
+                          mat-menu-item>
+                    Manage Images &nbsp;<i class="far fa-edit text-primary"></i>
+                  </button>
+                  <ng-template #imagesTemplate>
+                    <app-manage-product-images (change)="refreshProducts()"
+                                               [product]="product" [subCategories]="gdService.SubCategories"
+                                               [helperService]="helperService"
+                                               [store]="store"></app-manage-product-images>
+                  </ng-template>
+                  <button (click)="helperService.openDialog(addProductTags)"
+                          mat-menu-item>
+                    Add Tags &nbsp; <i class="fas fa-plus-circle text-primary"></i>
+                  </button>
+                  <ng-template #addProductTags>
+                    <app-add-product-tags (change)="refreshProducts()" [helperService]="helperService"
+                                          [gdService]="gdService" [store]="store"
+                                          [product]="product"></app-add-product-tags>
+                  </ng-template>
+                  <button
+                    (click)="helperService.openDialog(deleteProductTags)"
+                    [disabled]="product.productTags.length === 0"
+                    mat-menu-item>
+                    Remove Tags &nbsp; <i class="fas fa-trash text-danger"></i>
+                  </button>
+                  <ng-template #deleteProductTags>
+                    <app-remove-product-tags [helperService]="helperService"
+                                             [gdService]="gdService" [store]="store"
+                                             (change)="refreshProducts()"
+                                             [product]="product"></app-remove-product-tags>
+                  </ng-template>
+                </mat-menu>
+              </mat-cell>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 20, 300]" showFirstLastButtons></mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="large" color="#fff" type="ball-clip-rotate"
+>
+  <p style="font-size: 20px; color: white">
+    {{helperService.state}}
+  </p>
+</ngx-spinner>
+<ng-template #errorTemplate>
+  <app-show-error-dialog [error]="helperService.error"></app-show-error-dialog>
+</ng-template>
+<ng-template #creationTemp>
+  <app-add-product (change)="refreshProducts()" [subCategories]="gdService.SubCategories"
+                   [helperService]="helperService"
+                   [products]="Products"></app-add-product>
+</ng-template>

@@ -1,0 +1,89 @@
+<h2 mat-dialog-title>
+  New Sub Category
+</h2>
+<mat-dialog-content class="mat-typography" style="width: 900px; height: auto">
+  <form [formGroup]="addSubCategoryForm" novalidate>
+
+    <div class="row ">
+      <div class="col-lg-12">
+        <div class="form-group">
+          <label for="name" class="form-control-label"> Name</label>
+          <input class="form-control" type="text" id="name" formControlName="name" placeholder="Ex. Women Clothes">
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-between">
+      <div class="col-lg-12">
+        <div class="form-group">
+          <label for="desc" class="form-control-label"> Description</label>
+          <textarea class="form-control" type="text" id="desc" formControlName="description"
+                    placeholder="This sub category has many collections">
+          </textarea>
+        </div>
+      </div>
+    </div>
+    <div class="row ">
+      <div class="col-lg-12">
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">Category</label>
+          <select class="form-control" formControlName="categoryId" id="exampleFormControlSelect1">
+            <option [value]="cat.id" *ngFor="let cat of categories">{{cat.name}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </form>
+  <hr class="my-3">
+  <div class="row">
+    <div class="col-md-8">
+      <mat-form-field class="example-full-width">
+        <mat-hint class="text-warning">This Field is optional</mat-hint>
+        <mat-label> Reference Sub Category</mat-label>
+        <mat-select multiple [(ngModel)]="helperService.selectedReferences">
+          <mat-option class="scroll" [value]="{id: ref.id, name: ref.name}"
+                      *ngFor="let ref of helperService.referenceItems; let i = index">
+            {{ref.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <button [disabled]="helperService.selectedReferences.length === 0"
+              (click)="helperService.pushReferences()" class="btn btn-primary">
+        Add Reference
+      </button>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-md-2 m-2 p-2" *ngFor="let ref of helperService.chosenReferences; let i = index">
+      <button class="badge badge-pill badge-sm badge-dark">
+        <span style="font-size: 13px;">{{ref.name}}</span> &nbsp; &nbsp; <i
+        (click)="helperService.removeReference(ref.name)"
+        class="fas fa-trash text-danger"
+        style="font-size: 13px; cursor: pointer"></i>
+      </button>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button [disabled]="addSubCategoryForm.invalid"
+          (click)="addSubCategory()" mat-raised-button color="primary"
+          style="width: 120px;" type="button">
+    Add
+  </button>
+  <button [disabled]="helperService.startLoadingFlag" mat-raised-button color="warn" style="width: 120px;"
+          class="ml-2" (click)="helperService.closeDialog()" type="button">
+    Close
+  </button>
+</mat-dialog-actions>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="large" color="#fff" type="timer"
+>
+  <p style="font-size: 20px; color: white">
+    {{helperService.state}}
+  </p>
+</ngx-spinner>
+<ng-template #errorTemplate>
+  <app-show-error-dialog [error]="helperService.error"></app-show-error-dialog>
+</ng-template>

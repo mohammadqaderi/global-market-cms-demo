@@ -1,0 +1,152 @@
+<div class="header bg-danger pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <p class=" text-white display-1">
+        Tags
+      </p>
+      <p class="text-white text-lg">
+        start creating tags and modify the tags to be published in the application
+      </p>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--7">
+  <div class="card row justify-content-center ml-1 mr-1 mt-5 mb-5">
+    <div class="card-header">
+        <span class="display-4">
+          Tags
+        </span>
+      <button (click)="helperService.openDialog(creationTemp)" class="btn float-right btn-primary ">
+        Add New Tag &nbsp; <i class="fas fa-plus-circle"></i>
+      </button>
+    </div>
+    <div class="card-body">
+      <div class="row justify-content-center m-2" *ngIf="Tags && Tags.length >= 1">
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" floatLabel="always" color="primary"
+                          hideRequiredMarker class="example-full-width">
+            <mat-label>
+              Search For Tag
+            </mat-label>
+            <input type="text" name="searchTerm"
+                   matInput [(ngModel)]="searchTerm">
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label> Displayed Rows</mat-label>
+            <mat-select [(ngModel)]="displayedRows">
+              <mat-option (onSelectionChange)="selectDisplayedRows()" [value]="row"
+                          *ngFor="let row of [5,10,20,50,100,500]">
+                {{row}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div *ngIf="Tags && Tags.length < 1" class="row justify-content-center mt-3 mb-3">
+        <h4>
+          No Tags Available!
+        </h4>
+      </div>
+      <table class="table" *ngIf="Tags && Tags.length >= 1">
+        <thead>
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Name</th>
+          <th scope="col">Created At</th>
+          <th scope="col">Updated At</th>
+          <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let tag of selectDisplayedRows() | tagsFilter: searchTerm; let i = index">
+          <td>{{tag.id}}</td>
+          <td>{{tag.name}}</td>
+          <td>{{tag.createdAt | date: 'short'}}</td>
+          <td>
+            <span >{{(tag.updatedAt | date: 'short') || 'Not updated yet'}}</span>
+          </td>
+
+          <td>
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu>
+              <button (click)="prepareUpdateTag(tag.name); helperService.openDialog(updateTemp)"
+                      mat-menu-item>
+                Update
+              </button>
+              <ng-template #updateTemp>
+                <h2 mat-dialog-title>Fill Tag Data</h2>
+                <mat-dialog-content class="mat-typography" style="max-width: 500px; width: 500px;">
+                  <div class="row mt-2">
+                    <div class="col-lg-12">
+                      <mat-form-field appearance="fill" class="example-full-width">
+                        <mat-label>Name</mat-label>
+                        <input matInput name="name" [(ngModel)]="updateTagDto.name" placeholder="Tag Name">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </mat-dialog-content>
+                <mat-dialog-actions align="end">
+                  <button mat-button (click)="helperService.closeDialog()">Cancel</button>
+                  <button [disabled]="!updateTagDto.name" mat-raised-button color="primary"
+                          (click)="updateTag(tag.id)">
+                    Update
+                  </button>
+                </mat-dialog-actions>
+              </ng-template>
+              <button (click)="helperService.openModal(deleteTemplate)"
+                      mat-menu-item>
+                Delete
+              </button>
+              <ng-template #deleteTemplate>
+                <div class="modal-body text-center">
+                  <p>Do you want to delete this category?</p>
+                  <p class="text-danger">Note that all sub-categories and products that have this tag will remove it
+                    &nbsp; <i class="fa fa-exclamation-triangle" aria-hidden="true"></i></p>
+                  <button type="button" (click)="helperService.hideModal(); deleteTag(tag.id)"
+                          class="btn btn-default">Yes
+                  </button>
+                  <button type="button" class="btn btn-primary" (click)="helperService.hideModal()">No</button>
+                </div>
+              </ng-template>
+            </mat-menu>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+
+    </div>
+  </div>
+</div>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="large" color="#fff" type="ball-clip-rotate"
+>
+  <p style="font-size: 20px; color: white">
+    {{helperService.state}}
+  </p>
+</ngx-spinner>
+<ng-template #errorTemplate>
+  <app-show-error-dialog [error]="helperService.error"></app-show-error-dialog>
+</ng-template>
+<ng-template #creationTemp>
+  <h2 mat-dialog-title>Fill Tag Data</h2>
+  <mat-dialog-content class="mat-typography" style="max-width: 500px; width: 500px;">
+    <div class="row mt-2">
+      <div class="col-lg-12">
+        <mat-form-field appearance="fill" class="example-full-width">
+          <mat-label>Name</mat-label>
+          <input matInput name="name" [(ngModel)]="createTagDto.name" placeholder="Tag Name">
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="clearName(); helperService.closeDialog()">Cancel</button>
+    <button [disabled]="!createTagDto.name" mat-raised-button color="primary" (click)="addNewTag()">Create</button>
+  </mat-dialog-actions>
+</ng-template>

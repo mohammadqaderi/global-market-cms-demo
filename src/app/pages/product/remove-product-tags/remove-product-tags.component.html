@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>
+  Remove Product tags
+</h2>
+<mat-dialog-content class="mat-typography" style="width: 700px; height: auto">
+  <div class="row mt-1 mb-1 p-2">
+    <mat-form-field class="example-chip-list">
+      <mat-chip-list #tagsList aria-label="Tags">
+        <mat-chip *ngFor="let tag of transitionProductTags" [selectable]="helperService.selectable"
+                  [removable]="helperService.removable" (removed)="remove(tag)">
+          {{tag.name}}
+          <mat-icon matChipRemove *ngIf="helperService.removable">cancel</mat-icon>
+        </mat-chip>
+        <input placeholder="New Tag..."
+               [matChipInputFor]="tagsList"
+               [matAutocomplete]="autoName"
+               [matChipInputSeparatorKeyCodes]="helperService.separatorKeysCodes"
+               [matChipInputAddOnBlur]="helperService.addOnBlur"
+               (matChipInputTokenEnd)="add($event)">
+      </mat-chip-list>
+    </mat-form-field>
+    <mat-autocomplete #autoName="matAutocomplete">
+      <mat-option *ngFor="let productTag of productTags ; let i = index"
+                  [value]="productTag.name">
+        <p (click)="pushTag(productTag)">{{productTag.name}}</p>
+      </mat-option>
+    </mat-autocomplete>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button [disabled]="transitionProductTags.length < 1 || helperService.startPushing" (click)="removeTags()" mat-raised-button
+          color="primary"
+          style="width: 120px;" type="button">
+    Remove
+  </button>
+  <button [disabled]="helperService.startPushing" (click)="helperService.hideDialog()" mat-raised-button color="warn"
+          style="width: 120px;"
+          class="ml-2" type="button">
+    Close
+  </button>
+</mat-dialog-actions>

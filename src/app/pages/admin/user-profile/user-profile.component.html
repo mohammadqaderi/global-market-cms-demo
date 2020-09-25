@@ -1,0 +1,205 @@
+<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+     style="min-height: 600px; background-image: url(assets/img/theme/profile-cover.jpg);
+     background-size: cover; background-position: center top;">
+  <!-- Mask -->
+  <span class="mask bg-gradient-danger opacity-6"></span>
+  <!-- Header container -->
+  <div class="container-fluid d-flex align-items-center">
+    <div class="row">
+      <div class="col-lg-7 col-md-10">
+        <h1 class="display-2 text-white" *ngIf="Profile">Hello {{Profile.displayName}}</h1>
+        <p class="text-white mt-0 mb-5">This is your profile page. You can see the progress you've made with your work
+          and manage your projects or assigned tasks</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--7" *ngIf="Profile">
+  <div class="row">
+    <div class="col-xl-5 order-xl-2 mb-5 mb-xl-0">
+      <div class="card card-profile shadow">
+        <div class="row justify-content-center">
+          <div class="col-lg-3 order-lg-2">
+            <div class="card-profile-image">
+              <a>
+                <input ng2FileSelect [uploader]="uploader" style="display: none" type="file"
+                       (change)="onImageSelect(hiddenFileInput)"
+                       #hiddenFileInput>
+                <img #img *ngIf="!helperService.selectedImage" style="max-width: 170px; max-height: 150px;"
+                     [src]="Profile.image"
+                     (error)="img.src= '../../../../assets/img/theme/workout.jpg'"
+                     class="avatar  avatar-lg rounded-circle">
+                <img *ngIf="helperService.selectedImage" style="max-width: 170px; max-height: 150px;"
+                     [src]="helperService.selectedImage"
+                     class="avatar avatar-lg rounded-circle">
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="card-body justify-content-center mt-2">
+          <div class="row mt-3 mb-4 justify-content-center">
+            <button *ngIf="!helperService.selectedImage" (click)="hiddenFileInput.click()"
+                    class="btn btn-sm btn-primary text-center">
+              Change Image &nbsp; <i class="fas fa-camera"></i>
+            </button>
+            <div class="justify-content-center" *ngIf="helperService.selectedImage">
+              <div class="btn-group justify-content-center" role="group" aria-label="Basic example">
+                <button [disabled]="startUploadingImage"
+                        (click)="updateImage()"
+                        type="button" class="btn btn-secondary">Save &nbsp; <i
+                  class="fas fa-save">
+                </i></button>
+                <button [disabled]="startUploadingImage" type="button" class="btn btn-danger"
+                        (click)="helperService.selectedImage = null">Cancel &nbsp; <i class="fas fa-times"></i>
+                </button>
+              </div>
+              <div *ngIf="startUploadingImage" class="mt-3 mb-2">
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+              </div>
+            </div>
+          </div>
+          <div class="row justify-content-center "
+               *ngIf="helperService.isInvalidImageType">
+            <p class="text-danger lead">
+              Please Enter a valid image type!
+            </p>
+          </div>
+          <div class="row mt-4 ">
+            <div class="col">
+              <div class="card-profile-stats mt-4 d-flex justify-content-center mt-md-5">
+              </div>
+            </div>
+          </div>
+          <div class="text-center">
+            <h2>
+              {{Profile.displayName}}
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-7 order-xl-1">
+      <div class="card bg-secondary shadow">
+        <div class="card-header bg-white border-0">
+          <div class="row align-items-center">
+            <div class="col-8">
+              <h3 class="mb-0">My account</h3>
+            </div>
+            <div class="col-4 text-right">
+              <button [disabled]="updateProfileForm.invalid || !formChanged" (click)="helperService.openModal(template)"
+                      class="btn btn-sm btn-primary">Update Profile
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="updateProfileForm" novalidate>
+            <h6 class="heading-small text-muted mb-4">User information</h6>
+            <div class="pl-lg-4">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-display-name">Display Name</label>
+                    <input formControlName="displayName" type="text" id="input-display-name"
+                           class="form-control form-control-alternative"
+                           [class.is-invalid]="DisplayName.invalid && DisplayName.touched"
+                           placeholder="Display Name">
+                    <div *ngIf="(DisplayName.invalid && DisplayName.touched) || DisplayName.dirty">
+                      <small *ngIf="DisplayName.errors?.required"
+                             class="text-danger">{{errorMessages.requiredField('Display Name')}}</small>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-email">Email</label>
+                    <input formControlName="email" type="email" id="input-email"
+                           class="form-control form-control-alternative"
+                           placeholder="jesse@example.com">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-country">Country</label>
+                    <input formControlName="country" type="text" id="input-country"
+                           class="form-control form-control-alternative"
+                           [class.is-invalid]="Controls['country'].invalid && Controls['country'].touched"
+                           placeholder="Country">
+                    <div
+                      *ngIf="(Controls['country'].invalid && Controls['country'].touched) || Controls['country'].dirty">
+                      <small *ngIf="Controls['country'].errors?.required"
+                             class="text-danger">{{errorMessages.requiredField('Country')}}</small>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label class="form-control-label" for="input-city">City</label>
+                    <input formControlName="city" type="text" id="input-city"
+                           class="form-control form-control-alternative"
+                           [class.is-invalid]="Controls['city'].invalid && Controls['city'].touched"
+                           placeholder="City">
+                    <div
+                      *ngIf="(Controls['city'].invalid && Controls['city'].touched) || Controls['city'].dirty">
+                      <small *ngIf="Controls['city'].errors?.required"
+                             class="text-danger">{{errorMessages.requiredField('City')}}</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="form-group">
+                    <label for="input-gender">Gender</label>
+                    <select formControlName="gender"
+                            [class.is-invalid]="Controls['gender'].invalid && Controls['gender'].touched"
+                            class="form-control" id="input-gender">
+                      <option *ngFor="let g of ['MALE', 'FEMALE']" [value]="g">{{g}}</option>
+                    </select>
+                    <div
+                      *ngIf="(Controls['gender'].invalid && Controls['gender'].touched) || Controls['gender'].dirty">
+                      <small *ngIf="Controls['gender'].errors?.required"
+                             class="text-danger">{{errorMessages.requiredField('Gender')}}</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr class="my-4"/>
+            <h6 class="heading-small text-muted mb-4">Contact information</h6>
+            <div class="pl-lg-4">
+              <app-add-contacts [form]="updateProfileForm" [Contacts]="Contacts"></app-add-contacts>
+            </div>
+            <div class="pl-lg-4">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Do you want to confirm?</p>
+    <button type="button" (click)="helperService.hideModal(); updateProfile()"
+            class="btn btn-default">Yes
+    </button>
+    <button type="button" class="btn btn-primary" (click)="helperService.hideModal()">No</button>
+  </div>
+</ng-template>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="large" color="#fff" type="ball-clip-rotate"
+>
+  <p style="font-size: 20px; color: white">
+    {{helperService.state}}
+  </p>
+</ngx-spinner>

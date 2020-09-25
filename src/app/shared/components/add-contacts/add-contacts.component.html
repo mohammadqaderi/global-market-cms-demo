@@ -1,0 +1,39 @@
+<div class="row justify-content-end">
+  <button (click)="addContact(contact)" class="btn btn-primary btn-sm pull-end float-right mr-3">
+    Add New Contact <i class="fas fa-plus-circle"></i>
+  </button>
+</div>
+<form [formGroup]="form">
+  <div formArrayName="contacts" *ngFor="let c of Contacts.controls; let i=index">
+    <div [formGroupName]="i">
+      <div class="form-row align-items-center mt-2 mb-2">
+        <div class="col-auto">
+          <label class="sr-only">Address</label>
+          <input
+            formControlName="address" type="text" class="form-control" placeholder="Address"
+            aria-label="Address" aria-describedby="button-addon2"
+            [class.is-invalid]="ContactControl(i).invalid && ContactControl(i).touched">
+        </div>
+
+        <div class="col-auto">
+          <label class="sr-only">Phone</label>
+          <input
+            formControlName="phone" type="tel" class="form-control" placeholder="Phone"
+            aria-label="Phone" aria-describedby="button-addon2"
+            [class.is-invalid]="ContactControl(i).invalid && ContactControl(i).touched">
+        </div>
+        <div class="col-auto">
+          <button (click)="removeContact(i)" class="btn btn-danger">
+            Remove
+          </button>
+        </div>
+      </div>
+      <div *ngIf="(ContactControl(i).invalid && ContactControl(i).touched) || ContactControl(i).dirty">
+        <small *ngIf="ContactControl(i).errors?.required"
+               class="text-danger">Please Enter valid contact data</small>
+      </div>
+    </div>
+  </div>
+
+</form>
+

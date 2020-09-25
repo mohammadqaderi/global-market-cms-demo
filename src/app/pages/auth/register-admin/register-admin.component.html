@@ -1,0 +1,92 @@
+<div class="header bg-gradient-danger py-7 py-lg-8">
+  <div class="container">
+    <div class="header-body text-center mb-7">
+      <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-6">
+          <h1 class="text-white">Registration Page</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="separator separator-bottom separator-skew zindex-100">
+    <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <polygon class="fill-default" points="2560 0 2560 100 0 100"></polygon>
+    </svg>
+  </div>
+</div>
+<!-- Page content -->
+<div class="container mt--8 pb-5">
+  <!-- Table -->
+  <div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8">
+      <div class="card bg-secondary shadow border-0">
+        <div class="card-body px-lg-5 py-lg-5">
+          <form role="form" [formGroup]="registrationForm" (ngSubmit)="submitRegister()" novalidate>
+            <div class="form-group">
+              <div class="input-group input-group-alternative mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                </div>
+                <input formControlName="username"
+                       name="username" [class.is-invalid]="Username.invalid && Username.touched"
+                       class="form-control" placeholder="Username" type="text">
+              </div>
+              <div *ngIf="(Username.invalid && Username.touched) || Username.dirty">
+                <small *ngIf="Username.errors?.required"
+                       class="text-danger">{{errorMessages.requiredField('Username')}}</small>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group input-group-alternative mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                </div>
+                <input formControlName="email" class="form-control" placeholder="Email" type="email"
+                       name="email"
+                       [class.is-invalid]="Email.invalid && Email.touched">
+              </div>
+              <div *ngIf="(Email.invalid && Email.touched) || Email.dirty">
+                <small *ngIf="Email.errors?.required"
+                       class="text-danger">{{errorMessages.requiredField('Email')}}</small>
+                <small *ngIf="Email.errors?.pattern"
+                       class="text-danger">{{errorMessages.notValidField("Email")}}</small>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group input-group-alternative">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                </div>
+                <input formControlName="password"
+                       [class.is-invalid]="Password.invalid && Password.touched" class="form-control"
+                       placeholder="Password" type="password"
+                       name="password">
+              </div>
+              <div *ngIf="(Password.invalid && Password.touched) || Password.dirty">
+                <small *ngIf="Password.errors?.required"
+                       class="text-danger">{{errorMessages.requiredField('Password')}}</small>
+              </div>
+            </div>
+            <div class="text-center">
+              <button [disabled]="registrationForm.invalid"
+                      type="submit" class="btn btn-primary mt-4">Register
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #errorTemplate>
+  <app-show-error-dialog
+    [error]="helperService.error"></app-show-error-dialog>
+</ng-template>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="large" color="#fff" type="ball-clip-rotate"
+>
+  <p style="font-size: 20px; color: white">
+    {{helperService.state}}
+  </p>
+</ngx-spinner>

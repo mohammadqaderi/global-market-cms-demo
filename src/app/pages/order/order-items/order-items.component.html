@@ -1,0 +1,46 @@
+<h2 mat-dialog-title>
+  Order Items
+</h2>
+<mat-dialog-content class="mat-typography" style="width: 900px; height: auto">
+  <table class="table" *ngIf="order">
+    <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Image</th>
+      <th scope="col">Name</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Unit Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let orderItem of order.orderItems; let i = index">
+      <td>{{order.id}}</td>
+      <td>
+        <img *ngIf="getOrderItemProduct(orderItem.productId)"
+             [src]="getOrderItemProduct(orderItem.productId).images[0]" alt="Order Item Product"
+             class="img-thumbnail"
+             style="max-width: 120px; max-height: 120px">
+        <span *ngIf="!getOrderItemProduct(orderItem.productId)">
+          Product Not Available
+        </span>
+      </td>
+      <td>
+        <span *ngIf="getOrderItemProduct(orderItem.productId)">
+          {{getOrderItemProduct(orderItem.productId).name}}
+        </span>
+        <span *ngIf="!getOrderItemProduct(orderItem.productId)">
+        Product Not Available
+      </span>
+      </td>
+      <td>{{orderItem.quantity}}</td>
+      <td>{{orderItem.unitPrice}}</td>
+    </tr>
+    </tbody>
+  </table>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="warn" style="width: 120px;"
+          class="ml-2" (click)="helperService.closeDialog()" type="button">
+    Close
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,62 @@
+<h2 mat-dialog-title>
+  Manage Product Images
+</h2>
+<mat-dialog-content class="mat-typography" style="width: 900px; height: auto">
+  <div class="row justify-content-center">
+    <h2 class="text-center">
+      Current Product Images
+    </h2>
+  </div>
+  <div class="row">
+    <div class="col-xl-4 m-2" *ngFor="let img of currentProductImages; let i = index">
+      <div class="card" style="width: 18rem; max-height: 300px">
+        <img #img [src]="img" class="card-img-top center-cropped"
+             (error)="img.src= '../../../../assets/img/theme/workout.jpg'"
+             alt="Product Image">
+        <div class="card-body">
+          <button (click)="removeImage(img)" class="btn btn-block btn-danger">
+            Remove &nbsp; <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr class="my-3">
+  <div class="row justify-content-center">
+    <div class="col-xl-12">
+      <div class="custom-dropzone" ngx-dropzone [accept]="'image/*'" (change)="helperService.onSelect($event)">
+        <ngx-dropzone-label>
+          <div>
+            <h2>Drop New Images Over Here</h2>
+          </div>
+        </ngx-dropzone-label>
+        <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of helperService.files" [file]="f"
+                                    [removable]="true" (removed)="helperService.onRemove(f)">
+        </ngx-dropzone-image-preview>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button
+    [disabled]="currentProductImages.length === 0 && helperService.files.length === 0"
+    (click)="saveProductImages()" mat-raised-button color="primary"
+    style="width: 120px;" type="button">
+    Save
+  </button>
+  <button [disabled]="helperService.startLoadingFlag" mat-raised-button color="warn" style="width: 120px;"
+          class="ml-2" (click)="helperService.closeDialog()" type="button">
+    Close
+  </button>
+</mat-dialog-actions>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="large" color="#fff" type="timer"
+>
+  <p style="font-size: 20px; color: white">
+    {{helperService.state}}
+  </p>
+</ngx-spinner>
+<ng-template #errorTemplate>
+  <app-show-error-dialog [error]="helperService.error"></app-show-error-dialog>
+</ng-template>

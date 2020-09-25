@@ -1,0 +1,41 @@
+<h2 mat-dialog-title>
+  Edit {{user.username}} Roles
+</h2>
+<mat-dialog-content class="mat-typography" style="width: 700px; height: auto">
+  <div class="row mt-1 mb-1 p-2">
+    <mat-form-field class="example-chip-list">
+      <mat-chip-list #rolesList aria-label="User Claims">
+        <mat-chip *ngFor="let role of roles" [selectable]="helperService.selectable"
+                  [removable]="helperService.removable" (removed)="remove(role)">
+          {{role}}
+          <mat-icon matChipRemove *ngIf="helperService.removable">cancel</mat-icon>
+        </mat-chip>
+        <input placeholder="User Claims"
+               [matChipInputFor]="rolesList"
+               [matAutocomplete]="autoName"
+               [matChipInputSeparatorKeyCodes]="helperService.separatorKeysCodes"
+               [matChipInputAddOnBlur]="helperService.addOnBlur"
+               (matChipInputTokenEnd)="add($event)">
+      </mat-chip-list>
+    </mat-form-field>
+    <mat-autocomplete #autoName="matAutocomplete">
+      <mat-option *ngFor="let role of availableRoles ; let i = index"
+                  [value]="role">
+        <p (click)="pushRole(role)">{{role}}</p>
+      </mat-option>
+    </mat-autocomplete>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button (click)="editUserRoles()"
+          mat-raised-button
+          color="primary"
+          style="width: 120px;" type="button">
+    Edit
+  </button>
+  <button [disabled]="helperService.startPushing" (click)="helperService.hideDialog()" mat-raised-button color="warn"
+          style="width: 120px;"
+          class="ml-2" type="button">
+    Close
+  </button>
+</mat-dialog-actions>
