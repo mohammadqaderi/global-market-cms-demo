@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>
+  Fill Notification Title and Content
+</h2>
+<mat-dialog-content class="mat-typography" style="width: 900px; height: auto">
+  <div class="row ">
+    <div class="col-xl-12">
+      <div class="form-group">
+        <label for="title" class="form-control-label"> Title</label>
+        <input class="form-control" [(ngModel)]="notificationPayloadDto.title" type="text" id="title"
+               placeholder="Ex. New Notification">
+      </div>
+    </div>
+  </div>
+  <hr class="my-3">
+  <div class="row ">
+    <div class="col-xl-12">
+      <angular-editor [(ngModel)]="notificationPayloadDto.body" [config]="config"></angular-editor>
+    </div>
+  </div>
+  <hr class="my-3">
+  <div class="row">
+    {{notificationPayloadDto.body}}
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button
+    [disabled]="!notificationPayloadDto.body && !notificationPayloadDto.title"
+    mat-raised-button color="primary"
+    (click)="sendNotification()"
+    style="width: 120px;" type="button">
+    Send
+  </button>
+  <button [disabled]="helperService.startLoadingFlag" mat-raised-button color="warn" style="width: 120px;"
+          class="ml-2" (click)="helperService.closeDialog()" type="button">
+    Close
+  </button>
+</mat-dialog-actions>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="large" color="#fff" type="timer"
+>
+  <p style="font-size: 20px; color: white">
+    {{helperService.state}}
+  </p>
+</ngx-spinner>
+<ng-template #errorTemplate>
+  <app-show-error-dialog [error]="helperService.error"></app-show-error-dialog>
+</ng-template>

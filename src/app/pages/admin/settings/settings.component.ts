@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {HelperService} from '../../../shared/services/helper.service';
 
 @Component({
   selector: 'app-settings',
@@ -7,7 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsComponent implements OnInit {
 
-  constructor() { }
+  enableToRegisterAsAdmins = false;
+  enableUserToCheckout = false;
+  makeClientSideUnderMaintenance = false;
+  disableEditingData = false;
+
+  constructor(public helperService: HelperService) {
+  }
 
   ngOnInit(): void {
   }

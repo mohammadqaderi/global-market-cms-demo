@@ -14,8 +14,16 @@ export namespace UserActions {
     }
   }
 
+  export class PushNewAdmin {
+    static readonly type = '[User] Push New Admin';
+
+    constructor(public admin: UserModel) {
+    }
+  }
+
   export class EditUserRoles {
     static readonly type = '[User] Edit User Roles';
+
     constructor(public user: UserModel, public editRolesDto: { roles: UserRole[] }) {
     }
   }

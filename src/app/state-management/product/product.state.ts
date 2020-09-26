@@ -14,7 +14,6 @@ import DeleteProduct = ProductActions.DeleteProduct;
 import AddTagsToProduct = ProductActions.AddTagsToProduct;
 import RemoveTagsFromProduct = ProductActions.RemoveTagsFromProduct;
 import {ProductTagModel} from '../../models/Products/product-tag.model';
-import AddProduct = ProductActions.AddProduct;
 import DeleteSubCategoryProducts = ProductActions.DeleteSubCategoryProducts;
 import ClearProducts = ProductActions.ClearProducts;
 import {SubCategoryService} from '../../services/category/sub-category.service';

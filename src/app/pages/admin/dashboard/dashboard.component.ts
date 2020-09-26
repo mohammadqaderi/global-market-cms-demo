@@ -1,13 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import Chart from 'chart.js';
-
-// core components
-import {
-  chartOptions,
-  parseOptions,
-  chartExample1,
-  chartExample2
-} from '../../../variables/charts';
+import {GlobalDataService} from '../../../shared/services/global-data.service';
+import {HelperService} from '../../../shared/services/helper.service';
+import {Store} from '@ngxs/store';
+import {FetchGlobalData} from '../../../state-management/global-data/global-data.actions';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,48 +11,20 @@ import {
 })
 export class DashboardComponent implements OnInit {
 
-  public datasets: any;
-  public data: any;
-  public salesChart;
-  public clicked: boolean = true;
-  public clicked1: boolean = false;
-
-  constructor() {
+  constructor(public gdService: GlobalDataService, public helperService: HelperService,
+              private store: Store) {
   }
 
   ngOnInit() {
-
-    this.datasets = [
-      [0, 20, 10, 30, 15, 40, 20, 60, 60],
-      [0, 20, 5, 25, 10, 30, 15, 40, 40]
-    ];
-    this.data = this.datasets[0];
-
-
-    var chartOrders = document.getElementById('chart-orders');
-
-    parseOptions(Chart, chartOptions());
-
-
-    var ordersChart = new Chart(chartOrders, {
-      type: 'bar',
-      options: chartExample2.options,
-      data: chartExample2.data
-    });
-
-    var chartSales = document.getElementById('chart-sales');
-
-    this.salesChart = new Chart(chartSales, {
-      type: 'line',
-      options: chartExample1.options,
-      data: chartExample1.data
-    });
+    if (!this.gdService.GlobalData) {
+      this.helperService.showSpinner('Loading Data...');
+      this.store.dispatch(new FetchGlobalData()).subscribe(() => {
+        this.helperService.hideSpinner();
+      });
+    }
   }
 
-
-  public updateOptions() {
-    this.salesChart.data.datasets[0].data = this.data;
-    this.salesChart.update();
+  get GlobalData(){
+    return this.gdService.GlobalData
   }
-
 }

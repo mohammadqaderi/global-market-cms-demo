@@ -21,6 +21,9 @@ import {NgxsModule} from '@ngxs/store';
 import {NgxsStoragePluginModule, StorageOption} from '@ngxs/storage-plugin';
 import {SharedModule} from './shared/shared-global.module';
 import {ErrorInterceptor} from './services/auth/error.interceptor';
+import {ServiceWorkerModule} from '@angular/service-worker';
+import {CheckConnectionInterceptor} from './shared/services/interceptors/check-connection.interceptor';
+import {ErrorComponent} from './layouts/error/error.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +37,7 @@ import {ErrorInterceptor} from './services/auth/error.interceptor';
     ProductLayoutComponent,
     SubCategoryLayoutComponent,
     TagLayoutComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -48,9 +52,15 @@ import {ErrorInterceptor} from './services/auth/error.interceptor';
       key: StatesNames,
       storage: StorageOption.LocalStorage
     }),
-    SharedModule
+    SharedModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production})
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CheckConnectionInterceptor,
+      multi: true
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

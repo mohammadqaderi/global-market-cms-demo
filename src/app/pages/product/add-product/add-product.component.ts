@@ -33,7 +33,7 @@ export class AddProductComponent implements OnInit, OnDestroy {
       subCategoryId: new FormControl(null, [Validators.required]),
       name: new FormControl(null, [Validators.required]),
       description: new FormControl(null, [Validators.required]),
-      price: new FormControl(null, [Validators.required]),
+      currentPrice: new FormControl(null, [Validators.required]),
       quantity: new FormControl(null, [Validators.required]),
     });
     for (let i = 0; i < this.products.length; i++) {
@@ -44,7 +44,7 @@ export class AddProductComponent implements OnInit, OnDestroy {
   addProduct() {
     this.formData.append('name', this.addProductForm.value.name);
     this.formData.append('description', this.addProductForm.value.description);
-    this.formData.append('price', this.addProductForm.value.price);
+    this.formData.append('currentPrice', this.addProductForm.value.currentPrice);
     this.formData.append('quantity', this.addProductForm.value.quantity);
     if (this.helperService.chosenReferences.length > 0) {
       let arr = [];

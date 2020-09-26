@@ -10,6 +10,7 @@ import {SettingsComponent} from '../../pages/admin/settings/settings.component';
 import {UsersComponent} from '../../pages/admin/users/users.component';
 import {SharedModule} from '../../shared/shared-global.module';
 import {EditUsersRolesComponent} from '../../pages/admin/edit-users-roles/edit-users-roles.component';
+import {PushNotificationComponent} from '../../pages/admin/push-notification/push-notification.component';
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import {EditUsersRolesComponent} from '../../pages/admin/edit-users-roles/edit-u
     NotificationsComponent,
     SettingsComponent,
     UsersComponent,
+    PushNotificationComponent,
     EditUsersRolesComponent
   ]
 })

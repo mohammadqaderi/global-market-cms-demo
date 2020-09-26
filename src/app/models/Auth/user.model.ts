@@ -24,5 +24,11 @@ export class UserModel {
 
   profileId: number;
 
+  subscriberId: number;
+
   cartId: number;
+
+  constructor(public adminId: number, public adminUsername: string, public isEmailVerified: boolean,
+              protected adminEmail: string) {
+  }
 }

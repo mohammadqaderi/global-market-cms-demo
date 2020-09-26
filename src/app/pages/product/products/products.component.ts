@@ -13,14 +13,27 @@ import {TagState} from '../../../state-management/tag/tag.state';
 import {TagActions} from '../../../state-management/tag/tag.actions';
 import FetchAllTags = TagActions.FetchAllTags;
 import DeleteProduct = ProductActions.DeleteProduct;
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
-  styleUrls: ['./products.component.css']
+  styleUrls: ['./products.component.css'],
+  animations: [
+    trigger('flyInOut', [
+      state('in', style({ transform: 'translateX(0)' })),
+      transition('void => *', [
+        style({ transform: 'translateX(-100%)' }),
+        animate(100)
+      ]),
+      transition('* => void', [
+        animate(100, style({ transform: 'translateX(100%)' }))
+      ])
+    ])
+  ]
 })
 export class ProductsComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'name', 'quantity', 'inStock', 'price', 'tags', 'category', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'quantity', 'sales', 'currentPrice', 'previousPrice', 'tags', 'category', 'actions'];
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild('errorTemplate', {static: true}) errorTemplate: TemplateRef<any>;

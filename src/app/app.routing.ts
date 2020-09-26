@@ -11,6 +11,7 @@ import {OrderLayoutComponent} from './layouts/order-layout/order-layout.componen
 import {PaymentLayoutComponent} from './layouts/payment-layout/payment-layout.component';
 import {TagLayoutComponent} from './layouts/tag-layout/tag-layout.component';
 import {ProductLayoutComponent} from './layouts/product-layout/product-layout.component';
+import {ErrorComponent} from './layouts/error/error.component';
 
 const routes: Routes = [
   {
@@ -102,6 +103,16 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: () => import('./layouts/tag-layout/tag-layout.module').then(t => t.TagLayoutModule)
+      }
+    ]
+  },
+  {
+    path: '',
+    component: ErrorComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./layouts/error/error.module').then(e => e.ErrorModule)
       }
     ]
   },

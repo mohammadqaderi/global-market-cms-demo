@@ -1,6 +1,5 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {AuthService} from '../../../services/auth/auth.service';
 import {EmailPattern} from '../../../commons/constants';
 import {CustomValidators} from 'ngx-custom-validators';
@@ -25,7 +24,6 @@ export class LoginComponent implements OnInit {
   // special Case
   isSent = false;
   message: string = null;
-
   @ViewChild('errorTemplate', {static: true}) errorTemplate: TemplateRef<any>;
 
   constructor(private authService: AuthService,
@@ -33,7 +31,6 @@ export class LoginComponent implements OnInit {
               private store: Store,
               private gdService: GlobalDataService,
               private router: Router,
-              private modalService: BsModalService,
               public helperService: HelperService) {
     if (gdService.IsAuthenticated()) {
       router.navigate(['/dashboard']);
@@ -90,16 +87,16 @@ export class LoginComponent implements OnInit {
   }
 
   sendEmailForgotPassword() {
-    // this.helperService.showSpinner('Sending Request...');
-    // this.authService.sendEmailRequestPassword(this.emailRequestForm.value)
-    //   .subscribe((result: { isSuccessful: boolean, data: string }) => {
-    //     this.helperService.hideSpinner();
-    //     this.message = result.data;
-    //     this.isSent = true;
-    //     setTimeout(() => {
-    //       this.helperService.hideDialog();
-    //     }, 2500);
-    //   });
+    this.helperService.showSpinner('Sending Request...');
+    this.authService.forgotPassword(this.emailRequestForm.value.email)
+      .subscribe(result => {
+        this.message = `Your Request has been sent successfully, please checkout
+         your email inbox to confirm your request and reset your password`;
+        this.isSent = true;
+        this.helperService.hideSpinner();
+      }, error => {
+        this.helperService.showErrorDialog(error, this.errorTemplate);
+      });
   }
 
 }

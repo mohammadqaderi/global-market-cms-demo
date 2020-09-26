@@ -1,1 +1,73 @@
-<p>settings works!</p>
+<div class="header pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <div class="row">
+        <div class="col">
+          <div class="row offset-0">
+            <p class="text-white display-3">Settings</p> &nbsp; &nbsp;
+            <div class="icon text-lg icon-shape bg-warning text-white rounded-circle shadow">
+              <i class="fas fa-cogs"></i>
+            </div>
+          </div>
+          <div class="col mt-2">
+            <p class="text-white text-lg">You can modify and change popular settings in this system</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--7">
+  <div class="card p-3 ml-1 mr-1 mt-5 mb-5">
+    <div class="row">
+      <div class="col-xl-9">
+        <h3> Enable Users to register as admins
+        </h3>
+      </div>
+      <div class="col-xl-3">
+        <mat-slide-toggle [(ngModel)]="enableToRegisterAsAdmins"
+        ><p [innerText]="enableToRegisterAsAdmins ? 'Enabled': 'Disabled'"></p></mat-slide-toggle>
+      </div>
+    </div>
+    <hr class="my-4">
+
+    <div class="row">
+      <div class="col-xl-9">
+        <h3>Enable Users To Checkout Cart</h3>
+      </div>
+      <div class="col-xl-3">
+        <mat-slide-toggle [(ngModel)]="enableUserToCheckout"
+        ><p [innerText]="enableUserToCheckout ? 'Enabled': 'Disabled'"></p></mat-slide-toggle>
+      </div>
+    </div>
+    <hr class="my-4">
+    <div class="row">
+      <div class="col-xl-9">
+        <h3>Make Client Side App Under Maintenance</h3>
+      </div>
+      <div class="col-xl-3">
+        <mat-slide-toggle [(ngModel)]="makeClientSideUnderMaintenance"
+        ><p [innerText]="makeClientSideUnderMaintenance ? 'Enabled': 'Disabled'"></p></mat-slide-toggle>
+      </div>
+    </div>
+    <hr class="my-4">
+
+    <div class="row">
+      <div class="col-xl-9">
+        <h3> Disable Modifying Data, and prevent admins to make any changes</h3>
+      </div>
+      <div class="col-xl-3">
+        <mat-slide-toggle [(ngModel)]="disableEditingData"
+        ><p [innerText]="disableEditingData ? 'Enabled': 'Disabled'"></p></mat-slide-toggle>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="large" color="#fff" type="ball-clip-rotate"
+>
+  <p style="font-size: 20px; color: white">
+    {{helperService.state}}
+  </p>
+</ngx-spinner>

@@ -28,7 +28,7 @@ export class UpdateProductComponent implements OnInit, OnDestroy {
     this.updateProductDto = this.fb.group({
       name: new FormControl(this.product.name, [Validators.required]),
       description: new FormControl(this.product.description, [Validators.required]),
-      price: new FormControl(this.product.price, [Validators.required]),
+      currentPrice: new FormControl(this.product.currentPrice, [Validators.required]),
       quantity: new FormControl(this.product.quantity, [Validators.required]),
     });
     this.helperService.prepareUpdateReferenceProcess(this.products, this.product);
@@ -45,7 +45,7 @@ export class UpdateProductComponent implements OnInit, OnDestroy {
       name: this.updateProductDto.value.name,
       description: this.updateProductDto.value.description,
       quantity: this.updateProductDto.value.quantity,
-      price: this.updateProductDto.value.price,
+      currentPrice: this.updateProductDto.value.currentPrice,
       references
     };
 

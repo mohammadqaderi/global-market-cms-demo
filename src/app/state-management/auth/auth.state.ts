@@ -3,9 +3,12 @@ import {Action, Selector, State, StateContext, Store} from '@ngxs/store';
 import {AuthStateModel, Login, Logout, RegisterAdmin, UpdateToken} from './auth-actions';
 import {tap} from 'rxjs/operators';
 import {AuthService} from '../../services/auth/auth.service';
-import {Router} from '@angular/router';
 import {LoginResponse} from '../../commons/interfaces/login-response';
 import {UserModel} from '../../models/Auth/user.model';
+import {UserActions} from '../user/user.actions';
+import PushNewAdmin = UserActions.PushNewAdmin;
+import {UserState} from '../user/user.state';
+import FetchSystemUsers = UserActions.FetchSystemUsers;
 
 
 @State<AuthStateModel>({
@@ -44,7 +47,7 @@ export class AuthState {
     return state.admin;
   }
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private store: Store) {
   }
 
   @Action(Login)
@@ -66,10 +69,17 @@ export class AuthState {
     return this.authService.registerAdmin(action.payload).pipe(
       tap((result: LoginResponse) => {
         if (result) {
+          const {id, username, emailVerified, email} = result.admin;
+          const admin = new UserModel(id, username, emailVerified, email);
           ctx.setState({
             admin: result.admin,
             token: result.token
           });
+          if (!this.store.selectSnapshot(UserState.Users)) {
+            this.store.dispatch(new FetchSystemUsers()).subscribe(() => {
+              this.store.dispatch(new PushNewAdmin(admin));
+            });
+          }
         }
       })
     );
@@ -83,7 +93,7 @@ export class AuthState {
   }
 
   @Action(Logout)
-  logout(ctx: StateContext<AuthStateModel>) {
+  logout(ctx: StateContext<AuthStateModel>, action: Logout) {
     ctx.setState({
       token: null,
       admin: null,

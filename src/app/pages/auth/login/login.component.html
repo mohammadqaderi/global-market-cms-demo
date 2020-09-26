@@ -49,10 +49,10 @@
             </div>
           </form>
           <div class="row mt-2">
-            <div class="col-6">
+            <div class="col-xl-6">
               <a (click)="helperService.openDialog(forgotPass)" class="nav-link" mat-button>Forgot Your Password?</a>
             </div>
-            <div class="col-6">
+            <div class="col-xl-6">
               <a class="nav-link" routerLink="/auth/register-admin" mat-button>Or create a new account</a>
             </div>
           </div>
@@ -73,12 +73,12 @@
 </ngx-spinner>
 <ng-template #errorTemplate>
   <app-show-error-dialog
-                         [error]="helperService.error"></app-show-error-dialog>
+    [error]="helperService.error"></app-show-error-dialog>
 </ng-template>
 <ng-template #forgotPass>
-  <h2 mat-dialog-title>
+  <h5 *ngIf="!isSent" class="text-center" mat-dialog-title>
     Enter Your Email to Send Forgot Password Request
-  </h2>
+  </h5>
   <mat-dialog-content class="mat-typography" style="width: 500px; height: auto">
     <div *ngIf="!isSent" class="row mb-1 mt-1 justify-content-center">
       <form [formGroup]="emailRequestForm" novalidate>

@@ -7,7 +7,8 @@ import {UserService} from '../../services/user.service';
 import {tap} from 'rxjs/operators';
 import {UserModel} from '../../models/Auth/user.model';
 import EditUserRoles = UserActions.EditUserRoles;
-import {patch, updateItem} from '@ngxs/store/operators';
+import {append, patch, updateItem} from '@ngxs/store/operators';
+import PushNewAdmin = UserActions.PushNewAdmin;
 
 @State<UserStateModel>({
   name: 'users',
@@ -60,5 +61,12 @@ export class UserState {
         });
       })
     );
+  }
+
+  @Action(PushNewAdmin)
+  pushNewAdmin(ctx: StateContext<UserStateModel>, action: PushNewAdmin) {
+    ctx.setState(patch({
+      users: append([action.admin])
+    }));
   }
 }

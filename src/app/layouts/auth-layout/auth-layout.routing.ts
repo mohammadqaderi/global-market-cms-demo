@@ -21,9 +21,8 @@ export const AuthLayoutRoutes: Routes = [
         canActivate: [AdminAuthGuard]
       },
       {
-        path: 'reset-password',
+        path: 'reset-password/:newPasswordToken',
         component: ResetPasswordComponent,
-        canActivate: [AdminAuthGuard]
       }
     ]
   }

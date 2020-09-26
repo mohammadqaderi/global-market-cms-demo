@@ -6,7 +6,7 @@ export class UpdateProductDto {
 
   quantity: number;
 
-  price: number;
+  currentPrice: number;
 
   references: number[];
 }

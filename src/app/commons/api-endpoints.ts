@@ -1,4 +1,4 @@
-const prefixRoute = 'https://global-store-api.herokuapp.com';
+const prefixRoute = 'http://localhost:3000';
 export const ApiEndpoints = {
   AuthEndpoints: {
     registerUser: `${prefixRoute}/auth/register/user`,
@@ -14,6 +14,7 @@ export const ApiEndpoints = {
     getUserById: `${prefixRoute}/auth/users`,
     getSystemUsers: `${prefixRoute}/auth/system-users`,
     editUserRoles: `${prefixRoute}/auth/edit-user-roles`,
+    globalData: `${prefixRoute}/global-data`
   },
   ProfileEndpoints: {
     rootProfile: `${prefixRoute}/profiles`
@@ -44,5 +45,15 @@ export const ApiEndpoints = {
   },
   TagEndpoints: {
     rootTags: `${prefixRoute}/tags`
+  },
+  NotificationEndpoints: {
+    Notifications: `${prefixRoute}/notifications`,
+    Subscribers: `${prefixRoute}/notifications/subscribers`,
+    newSubscriber: `${prefixRoute}/notifications/subscribers/new`,
+    sendNotification: `${prefixRoute}/notifications/send-notification`
+  },
+  VapidKeys: {
+    publicKey: 'BKmeS0raBK4YrI7tiG3FaQ-TQJJjq-b4YsqxbiNgcTidYR3yvEkfLRFrFiljjAcXuNcVLErufWJ2pvhsN0O7uN8',
+    privateKey: 'Psk8q_qyekL2hrPwnYF8k-ckTmb8JRmjBUBsmv9FquY',
   }
 };

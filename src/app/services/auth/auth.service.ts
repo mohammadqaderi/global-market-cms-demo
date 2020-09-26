@@ -5,6 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {ApiEndpoints} from '../../commons/api-endpoints';
 import {UserModel} from '../../models/Auth/user.model';
 import {AuthCredentialsDto} from '../../commons/public-dto/auth-credentials.dto';
+import {GlobalDataDto} from '../../commons/public-dto/global-data.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,10 @@ export class AuthService {
 
   public registerAdmin(authCredentialsDto: AuthCredentialsDto): Observable<LoginResponse> {
     return this._http.post<LoginResponse>(ApiEndpoints.AuthEndpoints.registerAdmin, authCredentialsDto);
+  }
+
+  public getGlobalData(): Observable<GlobalDataDto> {
+    return this._http.get<GlobalDataDto>(ApiEndpoints.AuthEndpoints.globalData);
   }
 
   checkUserName(username: string): Observable<boolean> {

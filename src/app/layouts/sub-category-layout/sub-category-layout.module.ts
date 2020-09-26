@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {SubCategoriesComponent} from '../../pages/sub-category/sub-categories/sub-categories.component';
-import {SubCategoryDetailsComponent} from '../../pages/sub-category/sub-category-details/sub-category-details.component';
 import {RouterModule} from '@angular/router';
 import {SubCategoriesLayoutRoutes} from './sub-category-layout.routing';
 import {SharedModule} from '../../shared/shared-global.module';
@@ -14,7 +13,6 @@ import {UpdateSubCategoryComponent} from '../../pages/sub-category/update-sub-ca
 @NgModule({
   declarations: [
     SubCategoriesComponent,
-    SubCategoryDetailsComponent,
     AddSubCategoryTagsComponent,
     AddSubCategoryComponent,
     RemoveSubCategoryTagsComponent,

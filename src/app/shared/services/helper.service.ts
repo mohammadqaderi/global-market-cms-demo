@@ -17,6 +17,8 @@ import {OrderModel} from '../../models/Orders/order.model';
 import {PaymentModel} from '../../models/Payments/payment.model';
 import {InvoiceModel} from '../../models/Invoice/invoice.model';
 import {UserModel} from '../../models/Auth/user.model';
+import {NotificationEntity} from '../../models/Notifications/models/notification-entity';
+import {Observable, Subscription} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +45,17 @@ export class HelperService {
     statusCode: number
   };
 
+
+  // For Connection
+  onlineEvent: Observable<Event>;
+
+  setIsOnline(value: boolean) {
+    sessionStorage.removeItem('isOnline');
+    sessionStorage.setItem('isOnline', String(value));
+  }
+
+  offlineEvent: Observable<Event>;
+  subscriptions: Subscription[] = [];
 
   // For References
   selectedReferences: any[] = [];
@@ -154,6 +167,7 @@ export class HelperService {
   paymentDataSource: MatTableDataSource<PaymentModel> = new MatTableDataSource<PaymentModel>([]);
   invoiceDataSource: MatTableDataSource<InvoiceModel> = new MatTableDataSource<InvoiceModel>([]);
   userDataSource: MatTableDataSource<UserModel> = new MatTableDataSource<UserModel>([]);
+  notificationsDataSource: MatTableDataSource<NotificationEntity> = new MatTableDataSource<NotificationEntity>([]);
 
   //
   showErrorDialog(error: any, template: any) {

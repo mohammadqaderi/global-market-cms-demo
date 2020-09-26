@@ -11,7 +11,11 @@ export class ProductModel extends AbstractProduct {
 
   inStock: boolean;
 
-  price: number;
+  currentPrice: number;
+
+  previousPrice: number;
+
+  sales: null;
 
   productTags: ProductTagModel[];
 

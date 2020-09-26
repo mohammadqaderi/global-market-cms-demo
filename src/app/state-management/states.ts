@@ -9,6 +9,8 @@ import {SubCategoryState} from './sub-category/sub-category.state';
 import {TagState} from './tag/tag.state';
 import {UserState} from './user/user.state';
 import {PaymentState} from './payment/payment.state';
+import {GlobalDataState} from './global-data/global-data.state';
+import {NotificationState} from './notification/notification.state';
 
 export const StatesNames = [
   'auth',
@@ -22,6 +24,8 @@ export const StatesNames = [
   'payments',
   'users',
   'products',
+  'notificationsData',
+  'globalData'
 ];
 export const States = [
   AuthState,
@@ -34,5 +38,7 @@ export const States = [
   InvoiceState,
   ProfileState,
   OrderState,
-  UserState
+  UserState,
+  NotificationState,
+  GlobalDataState
 ];

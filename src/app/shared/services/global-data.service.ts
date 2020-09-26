@@ -30,6 +30,11 @@ import ClearSubCategory = SubCategoryActions.ClearSubCategory;
 import {UserState} from '../../state-management/user/user.state';
 import {UserActions} from '../../state-management/user/user.actions';
 import ClearUsersFromStorage = UserActions.ClearUsersFromStorage;
+import {GlobalDataState} from '../../state-management/global-data/global-data.state';
+import {NotificationActions} from '../../state-management/notification/notification.actions';
+import ClearNotifications = NotificationActions.ClearNotifications;
+import {ClearGlobalData} from '../../state-management/global-data/global-data.actions';
+import {NotificationState} from '../../state-management/notification/notification.state';
 
 @Injectable({
   providedIn: 'root'
@@ -87,6 +92,18 @@ export class GlobalDataService {
     return this.store.selectSnapshot(AuthState.Token);
   }
 
+  get GlobalData() {
+    return this.store.selectSnapshot(GlobalDataState.GlobalData);
+  }
+
+  get Notifications() {
+    return this.store.selectSnapshot(NotificationState.Notifications);
+  }
+
+  get Subscribers() {
+    return this.store.selectSnapshot(NotificationState.Subscribers);
+  }
+
   getInvoiceNumber(id) {
     if (this.Invoices) {
       const invoice = this.Invoices.find(i => i.id === id);
@@ -94,10 +111,16 @@ export class GlobalDataService {
     }
   }
 
-  getItemUser(id) {
+  getItemUser(id: number, subscriberId?: number) {
+    let user = null;
     if (this.Users) {
-      const user = this.Users.find(u => u.id === id);
-      return user ? user.username : 'No User';
+      if (id) {
+        user = this.Users.find(u => u.id === id);
+        return user ? user.username : 'No User';
+      } else if (subscriberId) {
+        user = this.Users.find(u => u.subscriberId === subscriberId);
+        return user ? user.username : 'No User';
+      }
     }
   }
 
@@ -111,6 +134,8 @@ export class GlobalDataService {
       new ClearCategory(),
       new ClearProducts(),
       new ClearSubCategory(),
+      new ClearNotifications(),
+      new ClearGlobalData(),
       new ClearUsersFromStorage(),
       new ClearTags()]);
   }
