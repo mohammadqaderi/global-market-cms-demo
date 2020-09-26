@@ -1,4 +1,4 @@
-const prefixRoute = 'http://localhost:3000';
+const prefixRoute = 'https://global-store-api.herokuapp.com';
 export const ApiEndpoints = {
   AuthEndpoints: {
     registerUser: `${prefixRoute}/auth/register/user`,
