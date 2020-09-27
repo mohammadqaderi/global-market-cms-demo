@@ -53,7 +53,9 @@ import {SocketIoModule} from "ngx-socket-io";
       key: StatesNames,
       storage: StorageOption.LocalStorage
     }),
-    SocketIoModule.forRoot(environment.socketIoConfig),
+    SocketIoModule.forRoot({
+      url: 'https://global-store-api.herokuapp.com'
+    }),
     SharedModule,
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production})
   ],
