@@ -12,6 +12,8 @@ import {CategoryDto} from '../../../commons/public-dto/category.dto';
 import AddNewCategory = CategoryActions.AddNewCategory;
 import UpdateCategory = CategoryActions.UpdateCategory;
 import DeleteCategory = CategoryActions.DeleteCategory;
+import {PushClientActivity} from '../../../state-management/activity/activity.actions';
+import {ActivityType} from '../../../commons/enums/activity-type.enum';
 
 @Component({
   selector: 'app-categories',
@@ -56,6 +58,11 @@ export class CategoriesComponent implements OnInit {
 
   addCategory() {
     this.helperService.showSpinner('Adding Category');
+    this.store.dispatch(new PushClientActivity({
+      user: this.gdService.Username,
+      action: ActivityType.CREATING,
+      description: `${this.gdService.Username} create a new category`
+    }));
     this.store.dispatch(new AddNewCategory(this.createCategoryDto)).subscribe(() => {
       this.afterFinishProcess();
       this.clearCreateDto();
@@ -70,6 +77,11 @@ export class CategoriesComponent implements OnInit {
   }
 
   updateCategory(id: number) {
+    this.store.dispatch(new PushClientActivity({
+      user: this.gdService.Username,
+      action: ActivityType.UPDATING,
+      description: `${this.gdService.Username} update a category`
+    }));
     this.helperService.showSpinner('Updating Category');
     this.store.dispatch(new UpdateCategory(id, this.updateCategoryDto)).subscribe(() => {
       this.afterFinishProcess();
@@ -84,6 +96,11 @@ export class CategoriesComponent implements OnInit {
 
   deleteCategory(id: number) {
     this.helperService.showSpinner('Deleting Category');
+    this.store.dispatch(new PushClientActivity({
+      user: this.gdService.Username,
+      action: ActivityType.DELETING,
+      description: `${this.gdService.Username} delete a category`
+    }));
     this.store.dispatch(new DeleteCategory(id)).subscribe(() => {
       this.helperService.categoryDataSource.data = this.Categories;
       this.helperService.subCategoryDataSource.data = this.gdService.SubCategories;

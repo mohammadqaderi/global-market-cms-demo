@@ -8,6 +8,8 @@ import {MatChipInputEvent} from '@angular/material/chips';
 import {ProductTagModel} from '../../../models/Products/product-tag.model';
 import {ProductActions} from '../../../state-management/product/product.actions';
 import RemoveTagsFromProduct = ProductActions.RemoveTagsFromProduct;
+import {PushClientActivity} from '../../../state-management/activity/activity.actions';
+import {ActivityType} from '../../../commons/enums/activity-type.enum';
 
 @Component({
   selector: 'app-remove-product-tags',
@@ -59,6 +61,12 @@ export class RemoveProductTagsComponent implements OnInit {
     for (let i = 0; i < this.transitionProductTags.length; i++) {
       removedTags = [...removedTags, this.transitionProductTags[i].id];
     }
+    this.store.dispatch(new PushClientActivity({
+      user: this.gdService.Username,
+      action: ActivityType.DELETING,
+      description: `${this.gdService.Username} has push remove a list of tags from product: ${this.product.name}`
+    }));
+    this.helperService.showSpinner('Removing Tags...');
     this.store.dispatch(new RemoveTagsFromProduct(this.product.id, {tags: removedTags})).subscribe(() => {
       this.helperService.hideDialog();
       this.helperService.openSnackbar(`Tags removed successfully from product`, 'Okay');

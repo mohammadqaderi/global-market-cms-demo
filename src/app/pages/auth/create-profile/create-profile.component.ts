@@ -1,12 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Store} from '@ngxs/store';
-import {FileUploader} from 'ng2-file-upload';
 import {ErrorMessages} from '../../../commons/helpers/functions/error-messages';
 import {HelperService} from '../../../shared/services/helper.service';
 import {GlobalDataService} from '../../../shared/services/global-data.service';
 import {Router} from '@angular/router';
 import {ProfileActions} from '../../../state-management/profile/profile.actions';
+import {PushClientActivity} from '../../../state-management/activity/activity.actions';
+import {ActivityType} from '../../../commons/enums/activity-type.enum';
 import CreateAdminProfile = ProfileActions.CreateAdminProfile;
 
 @Component({
@@ -19,9 +20,6 @@ export class CreateProfileComponent implements OnInit, OnDestroy {
   errorMessages = new ErrorMessages();
   createProfileForm: FormGroup;
   formSubmitted = false;
-
-
-  public uploader: FileUploader = new FileUploader({});
 
   constructor(private fb: FormBuilder,
               private store: Store,
@@ -56,8 +54,13 @@ export class CreateProfileComponent implements OnInit, OnDestroy {
   }
 
   createProfile() {
-    this.helperService.state = 'Creating Profile, Please Wait...';
+    this.helperService.showSpinner('Creating Profile, Please Wait...');
     this.formSubmitted = true;
+    this.store.dispatch(new PushClientActivity({
+      user: this.gdService.Username,
+      action: ActivityType.CREATING,
+      description: `${this.gdService.Username} create his own profile for the first time`
+    }));
     this.store.dispatch(new CreateAdminProfile(this.createProfileForm.value)).toPromise().then(() => {
       this.helperService.hideSpinner();
       this.helperService.adjustData();

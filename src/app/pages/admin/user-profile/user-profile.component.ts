@@ -9,7 +9,10 @@ import {GlobalDataService} from '../../../shared/services/global-data.service';
 import {Router} from '@angular/router';
 import {Contact} from '../../../commons/classes/contact';
 import {ProfileActions} from '../../../state-management/profile/profile.actions';
+import {PushClientActivity} from '../../../state-management/activity/activity.actions';
+import {ActivityType} from '../../../commons/enums/activity-type.enum';
 import EditProfile = ProfileActions.EditProfile;
+import ChangeProfileImage = ProfileActions.ChangeProfileImage;
 
 @Component({
   selector: 'app-user-profile',
@@ -101,20 +104,28 @@ export class UserProfileComponent implements OnInit {
   }
 
 
-  async updateImage() {
-    // this.startUploadingImage = true;
-    // const {filePath} = await this.mediaService
-    //   .changeImage('profile-images', this.Profile.image, this.helperService.imageFormData).toPromise();
-    // await this.store.dispatch(new UpdateProfileImage(filePath)).toPromise();
-    // this.helperService.openSnackbar('Image uploaded successfully', 'Okay');
-    // this.patchImage(filePath);
-    // this.helperService.adjustData();
-    // this.startUploadingImage = false;
+  updateImage() {
+    this.startUploadingImage = true;
+    this.store.dispatch(new PushClientActivity({
+      user: this.gdService.Username,
+      action: ActivityType.UPDATING,
+      description: `${this.gdService.Username} has changed his profile image`
+    }));
+    this.store.dispatch(new ChangeProfileImage(this.helperService.imageFormData, this.Profile.image)).subscribe(() => {
+      this.helperService.openSnackbar('Image uploaded successfully', 'Okay');
+      this.helperService.adjustData();
+      this.startUploadingImage = false;
+    });
+
   }
 
 
   updateProfile() {
-    const {displayName,} = this.updateProfileForm.value;
+    this.store.dispatch(new PushClientActivity({
+      user: this.gdService.Username,
+      action: ActivityType.UPDATING,
+      description: `${this.gdService.Username} has changed his profile image`
+    }));
     this.helperService.showSpinner('Updating Profile...');
     this.store.dispatch(new EditProfile(this.updateProfileForm.value)).subscribe(() => {
       this.helperService.hideSpinner();

@@ -14,6 +14,8 @@ import {TagActions} from '../../../state-management/tag/tag.actions';
 import FetchAllTags = TagActions.FetchAllTags;
 import DeleteProduct = ProductActions.DeleteProduct;
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {PushClientActivity} from '../../../state-management/activity/activity.actions';
+import {ActivityType} from '../../../commons/enums/activity-type.enum';
 
 @Component({
   selector: 'app-products',
@@ -21,13 +23,13 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
   styleUrls: ['./products.component.css'],
   animations: [
     trigger('flyInOut', [
-      state('in', style({ transform: 'translateX(0)' })),
+      state('in', style({transform: 'translateX(0)'})),
       transition('void => *', [
-        style({ transform: 'translateX(-100%)' }),
+        style({transform: 'translateX(-100%)'}),
         animate(100)
       ]),
       transition('* => void', [
-        animate(100, style({ transform: 'translateX(100%)' }))
+        animate(100, style({transform: 'translateX(100%)'}))
       ])
     ])
   ]
@@ -74,6 +76,11 @@ export class ProductsComponent implements OnInit {
 
   deleteProduct(id: number) {
     this.helperService.showSpinner('Deleting Product...');
+    this.store.dispatch(new PushClientActivity({
+      user: this.gdService.Username,
+      action: ActivityType.DELETING,
+      description: `${this.gdService.Username} has deleted a product`
+    }));
     this.store.dispatch(new DeleteProduct(id)).subscribe(() => {
       this.refreshProducts();
       this.helperService.hideSpinner();

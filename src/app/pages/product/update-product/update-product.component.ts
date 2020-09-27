@@ -5,6 +5,9 @@ import {ProductModel} from '../../../models/Products/product.model';
 import {Store} from '@ngxs/store';
 import {ProductActions} from '../../../state-management/product/product.actions';
 import UpdateProduct = ProductActions.UpdateProduct;
+import {PushClientActivity} from '../../../state-management/activity/activity.actions';
+import {ActivityType} from '../../../commons/enums/activity-type.enum';
+import {GlobalDataService} from '../../../shared/services/global-data.service';
 
 @Component({
   selector: 'app-update-product',
@@ -15,6 +18,7 @@ export class UpdateProductComponent implements OnInit, OnDestroy {
   updateProductDto: FormGroup;
   @Input() helperService: HelperService;
   @Input() products: ProductModel[];
+  @Input() gdService: GlobalDataService;
   @Input() product: ProductModel;
   @Input() store: Store;
   @Output()
@@ -49,6 +53,12 @@ export class UpdateProductComponent implements OnInit, OnDestroy {
       references
     };
 
+    this.store.dispatch(new PushClientActivity({
+      user: this.gdService.Username,
+      action: ActivityType.UPDATING,
+      description: `${this.gdService.Username} has update a product: ${this.product.name}`
+    }));
+    this.helperService.showSpinner('Updating Product...');
     this.store.dispatch(new UpdateProduct(this.product.id, obj)).subscribe(() => {
       this.helperService.hideSpinner();
       this.helperService.openSnackbar('Product updated successfully', 'Okay');

@@ -6,7 +6,9 @@ import {ProductActions} from '../../../state-management/product/product.actions'
 import ManageProductImages = ProductActions.ManageProductImages;
 import {SubCategoryModel} from '../../../models/Categories/sub-category.model';
 import {ProductService} from '../../../services/product/product.service';
-import {J} from '@angular/cdk/keycodes';
+import {PushClientActivity} from '../../../state-management/activity/activity.actions';
+import {ActivityType} from '../../../commons/enums/activity-type.enum';
+import {GlobalDataService} from '../../../shared/services/global-data.service';
 
 @Component({
   selector: 'app-manage-product-images',
@@ -20,6 +22,8 @@ export class ManageProductImagesComponent implements OnInit, OnDestroy {
   @Input() product: ProductModel;
   @Input() helperService: HelperService;
   @Input() store: Store;
+  @Input() gdService: GlobalDataService;
+
   @Input() subCategories: SubCategoryModel[];
   @Output() change: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('errorTemplate', {static: true}) errorTemplate: TemplateRef<any>;
@@ -51,6 +55,11 @@ export class ManageProductImagesComponent implements OnInit, OnDestroy {
     const s = this.subCategories.find(s => s.id === this.product.subCategoryId);
     const type = s ? s.name : 'Any';
     this.helperService.showSpinner('Please wait while edit images...');
+    this.store.dispatch(new PushClientActivity({
+      user: this.gdService.Username,
+      action: ActivityType.UPDATING,
+      description: `${this.gdService.Username} has manage product: ${this.product.name} images`
+    }));
     this.store.dispatch(new ManageProductImages(this.product.id, this.formData, type)).subscribe(() => {
       this.helperService.hideSpinner();
       this.helperService.hideDialog();

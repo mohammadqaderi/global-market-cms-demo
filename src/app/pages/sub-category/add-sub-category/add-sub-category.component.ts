@@ -7,6 +7,9 @@ import {Store} from '@ngxs/store';
 import {CategoryModel} from '../../../models/Categories/category.model';
 import {SubCategoryActions} from '../../../state-management/sub-category/sub-category.actions';
 import AddNewSubCategory = SubCategoryActions.AddNewSubCategory;
+import {PushClientActivity} from '../../../state-management/activity/activity.actions';
+import {ActivityType} from '../../../commons/enums/activity-type.enum';
+import {GlobalDataService} from '../../../shared/services/global-data.service';
 
 @Component({
   selector: 'app-add-sub-category',
@@ -20,10 +23,11 @@ export class AddSubCategoryComponent implements OnInit, OnDestroy {
   addSubCategoryForm: FormGroup;
   @Input() helperService: HelperService;
   @Input() subCategories: SubCategoryModel[];
+  @Input() gdService: GlobalDataService;
+
   @Input() categories: CategoryModel[];
   @Output()
   change: EventEmitter<any> = new EventEmitter<any>();
-  referenceSubCategories = [];
 
   constructor(private fb: FormBuilder, private s: SubCategoryService, private store: Store) {
   }
@@ -49,7 +53,12 @@ export class AddSubCategoryComponent implements OnInit, OnDestroy {
       description: this.addSubCategoryForm.value.description,
       references: refArray
     };
-    this.helperService.showSpinner('Adding Sub Category');
+    this.helperService.showSpinner('Adding Sub Category...');
+    this.store.dispatch(new PushClientActivity({
+      user: this.gdService.Username,
+      action: ActivityType.CREATING,
+      description: `${this.gdService.Username} has create a sub-category`
+    }));
     this.store.dispatch(new AddNewSubCategory(+this.addSubCategoryForm.value.categoryId, obj)).subscribe(() => {
       this.helperService.hideSpinner();
       this.helperService.openSnackbar('Sub Category added successfully', 'Okay');

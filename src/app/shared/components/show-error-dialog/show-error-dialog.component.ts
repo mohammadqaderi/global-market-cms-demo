@@ -16,7 +16,6 @@ export class ShowErrorDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.error);
     if ([403].indexOf(this.error.statusCode) !== -1) {
       this.errorName = 'Forbidden Resource';
       this.errorMessage = 'This Resource cannot be access without permissions (Forbidden)';

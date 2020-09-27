@@ -1,9 +1,11 @@
-import {Component, OnInit, ElementRef, Input} from '@angular/core';
+import {Component, ElementRef, Input, OnInit} from '@angular/core';
 import {ROUTES} from '../sidebar/sidebar.component';
 import {Location} from '@angular/common';
 import {Router} from '@angular/router';
 import {Store} from '@ngxs/store';
 import {GlobalDataService} from '../../shared/services/global-data.service';
+import {PushClientActivity} from '../../state-management/activity/activity.actions';
+import {ActivityType} from '../../commons/enums/activity-type.enum';
 
 @Component({
   selector: 'app-navbar',
@@ -27,6 +29,12 @@ export class NavbarComponent implements OnInit {
   }
 
   userLogout() {
+    let username = this.gdService.User.username;
+    this.store.dispatch(new PushClientActivity({
+      action: ActivityType.LOGOUT,
+      user: this.gdService.User.username,
+      description: `${username} has logout from a moment`
+    }));
     this.gdService.userLogout().subscribe(() => {
       this.router.navigate(['/auth/login']);
     });

@@ -5,6 +5,9 @@ import {Store} from '@ngxs/store';
 import {SubCategoryModel} from '../../../models/Categories/sub-category.model';
 import {SubCategoryActions} from '../../../state-management/sub-category/sub-category.actions';
 import UpdateSubCategory = SubCategoryActions.UpdateSubCategory;
+import {GlobalDataService} from '../../../shared/services/global-data.service';
+import {PushClientActivity} from '../../../state-management/activity/activity.actions';
+import {ActivityType} from '../../../commons/enums/activity-type.enum';
 
 @Component({
   selector: 'app-update-sub-category',
@@ -16,6 +19,7 @@ export class UpdateSubCategoryComponent implements OnInit, OnDestroy {
   @Input() helperService: HelperService;
   @Input() subCategories: SubCategoryModel[];
   @Input() subCategory: SubCategoryModel;
+  @Input() gdService: GlobalDataService;
   @Input() store: Store;
   @Output()
   change: EventEmitter<any> = new EventEmitter<any>();
@@ -43,7 +47,11 @@ export class UpdateSubCategoryComponent implements OnInit, OnDestroy {
       description: this.updateSubCategoryDto.value.description,
       references
     };
-
+    this.store.dispatch(new PushClientActivity({
+      user: this.gdService.Username,
+      action: ActivityType.UPDATING,
+      description: `${this.gdService.Username} has update sub-category: ${this.subCategory.name}`
+    }));
     this.store.dispatch(new UpdateSubCategory(this.subCategory.id, obj)).subscribe(() => {
       this.helperService.hideSpinner();
       this.helperService.openSnackbar('Sub Category updated successfully', 'Okay');

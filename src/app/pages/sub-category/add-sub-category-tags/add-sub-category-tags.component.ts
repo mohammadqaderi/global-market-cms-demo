@@ -5,6 +5,8 @@ import {Store} from '@ngxs/store';
 import {SubCategoryModel} from '../../../models/Categories/sub-category.model';
 import {SubCategoryActions} from '../../../state-management/sub-category/sub-category.actions';
 import AddTagsToSubCategory = SubCategoryActions.AddTagsToSubCategory;
+import {PushClientActivity} from '../../../state-management/activity/activity.actions';
+import {ActivityType} from '../../../commons/enums/activity-type.enum';
 
 @Component({
   selector: 'app-add-sub-category-tags',
@@ -29,6 +31,12 @@ export class AddSubCategoryTagsComponent implements OnInit, OnDestroy {
     for (let i = 0; i < this.helperService.transitionTags.length; i++) {
       tags = [...tags, this.helperService.transitionTags[i].id];
     }
+    this.helperService.showSpinner('Adding Tags...');
+    this.store.dispatch(new PushClientActivity({
+      user: this.gdService.Username,
+      action: ActivityType.PUSHING,
+      description: `${this.gdService.Username} has pushed a new tags to sub-category: ${this.subCategory.name}`
+    }));
     this.store.dispatch(new AddTagsToSubCategory(this.subCategory.id, {tags})).subscribe(() => {
       this.helperService.hideDialog();
       this.helperService.openSnackbar(`Tags added successfully into sub-category`, 'Okay');

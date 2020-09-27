@@ -140,6 +140,7 @@
 <ng-template #creationTemp>
   <app-add-sub-category (change)="refreshSubCategories()"
                         [helperService]="helperService"
+                        [gdService]="gdService"
                         [subCategories]="SubCategories"
                         [categories]="gdService.Categories"></app-add-sub-category>
 </ng-template>

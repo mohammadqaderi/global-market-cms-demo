@@ -5,8 +5,8 @@ import {GlobalDataService} from '../../../shared/services/global-data.service';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {UserActions} from '../../../state-management/user/user.actions';
-import FetchSystemUsers = UserActions.FetchSystemUsers;
 import {NotificationActions} from '../../../state-management/notification/notification.actions';
+import FetchSystemUsers = UserActions.FetchSystemUsers;
 import FetchAllNotifications = NotificationActions.FetchAllNotifications;
 import FetchAllSubscribers = NotificationActions.FetchAllSubscribers;
 
@@ -62,6 +62,7 @@ export class NotificationsComponent implements OnInit {
   get Notifications() {
     return this.gdService.Notifications;
   }
+
 
   refreshNotifications() {
     this.helperService.notificationsDataSource.data = this.Notifications;

@@ -3,9 +3,7 @@
     <div class="header-body text-center mb-7">
       <div class="row justify-content-center">
         <div class="col-lg-5 col-md-6">
-          <h1 class="text-white">Welcome!</h1>
-          <p class="text-lead text-light">Use these awesome forms to login or create new account in your project for
-            free.</p>
+          <h1 class="text-white">Create Your Profile</h1>
         </div>
       </div>
     </div>
@@ -47,7 +45,8 @@
                                  formControlName="displayName" type="text" id="input-displayName"
                                  class="form-control form-control-alternative"
                                  placeholder="Display Name">
-                          <div *ngIf="(Controls['displayName'].invalid && Controls['displayName'].touched) || Controls['displayName'].dirty">
+                          <div
+                            *ngIf="(Controls['displayName'].invalid && Controls['displayName'].touched) || Controls['displayName'].dirty">
                             <small *ngIf="Controls['displayName'].errors?.required"
                                    class="text-danger">{{errorMessages.requiredField('Display Name')}}</small>
                           </div>

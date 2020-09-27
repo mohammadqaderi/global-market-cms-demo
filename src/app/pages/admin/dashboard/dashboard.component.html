@@ -222,7 +222,7 @@
     </div>
   </div>
 </div>
-<div class="container-fluid mt--7 mb-3">
+<div class="container-fluid mt--7 mb-3" *ngIf="!!gdService.User && gdService.isSuperAdmin()">
   <div class="row justify-content-center">
     <div class="col-xl-10 mb-5 mb-xl-0">
       <div class="card shadow">
@@ -231,10 +231,37 @@
             <h1 class="text-uppercase text-muted ls-1 mb-1">Activities</h1>
           </div>
         </div>
-        <div class="card-body">
-          <p class="text-center display-4">
-            No Activities Until Now
-          </p>
+        <div class="card-body scroll">
+          <div *ngIf="!Activities || Activities.length ===0" class="row justify-content-center mt-3 mb-3">
+            <h4>
+              No Activities Until Now
+            </h4>
+          </div>
+          <table class="table " *ngIf="Activities && Activities.length >= 1">
+            <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Action Type</th>
+              <th scope="col">User</th>
+              <th scope="col">Time</th>
+              <th scope="col">Activity</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let activity of Activities; let i = index">
+              <td>{{activity.id}}</td>
+              <td>{{activity.action}}</td>
+              <td>{{activity.user}}</td>
+              <td>
+                {{activity.time | date: 'short'}}
+              </td>
+              <td>
+                <p>{{activity.description}}</p>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+
         </div>
       </div>
     </div>

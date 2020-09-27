@@ -9,8 +9,10 @@ import {Login} from '../../../state-management/auth/auth-actions';
 import {GlobalDataService} from '../../../shared/services/global-data.service';
 import {Router} from '@angular/router';
 import {ProfileActions} from '../../../state-management/profile/profile.actions';
-import FetchUserProfile = ProfileActions.FetchUserProfile;
 import {AuthState} from '../../../state-management/auth/auth.state';
+import {PushClientActivity} from '../../../state-management/activity/activity.actions';
+import {ActivityType} from '../../../commons/enums/activity-type.enum';
+import FetchUserProfile = ProfileActions.FetchUserProfile;
 
 @Component({
   selector: 'app-login',
@@ -66,6 +68,11 @@ export class LoginComponent implements OnInit {
 
   submitLogin() {
     this.helperService.showSpinner('Please Wait...');
+    let email = this.emailLoginDto.value.email;
+    this.store.dispatch(new PushClientActivity({
+      action: ActivityType.LOGIN,
+      user: email, description: `User with email ${email} logged in`
+    }));
     this.store.dispatch(new Login(this.emailLoginDto.value)).subscribe(() => {
       this.helperService.hideSpinner();
       if (this.store.selectSnapshot(AuthState.isAuthenticated)) {
@@ -88,6 +95,11 @@ export class LoginComponent implements OnInit {
 
   sendEmailForgotPassword() {
     this.helperService.showSpinner('Sending Request...');
+    this.store.dispatch(new PushClientActivity({
+      user: 'Not Defined',
+      action: ActivityType.SEND_FORGOT_REQUEST_PASSWORD,
+      description: `A non defined has requested to change his password`
+    }));
     this.authService.forgotPassword(this.emailRequestForm.value.email)
       .subscribe(result => {
         this.message = `Your Request has been sent successfully, please checkout

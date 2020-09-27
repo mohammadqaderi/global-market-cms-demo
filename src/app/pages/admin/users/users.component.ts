@@ -7,6 +7,7 @@ import {Store} from '@ngxs/store';
 import {UserActions} from '../../../state-management/user/user.actions';
 import {UserRole} from '../../../commons/enums/user-role.enum';
 import FetchSystemUsers = UserActions.FetchSystemUsers;
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-users',
@@ -20,7 +21,11 @@ export class UsersComponent implements OnInit {
 
   constructor(public helperService: HelperService,
               public gdService: GlobalDataService,
+              private router: Router,
               public store: Store) {
+    if (!gdService.isSuperAdmin()) {
+      router.navigate(['/dashboard']);
+    }
     if (!gdService.Users) {
       this.helperService.showSpinner('Loading Users...');
       this.store.dispatch(new FetchSystemUsers()).subscribe(() => {

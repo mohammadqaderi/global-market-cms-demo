@@ -3,11 +3,12 @@ import {GlobalDataService} from '../../../shared/services/global-data.service';
 import {HelperService} from '../../../shared/services/helper.service';
 import {Store} from '@ngxs/store';
 import {FetchGlobalData} from '../../../state-management/global-data/global-data.actions';
+import {FetchAllActivities} from '../../../state-management/activity/activity.actions';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
 
@@ -22,9 +23,26 @@ export class DashboardComponent implements OnInit {
         this.helperService.hideSpinner();
       });
     }
+
+    if (!this.gdService.Activities && this.gdService.isSuperAdmin()) {
+      this.loadActivities(10, null);
+    }
+
   }
 
-  get GlobalData(){
-    return this.gdService.GlobalData
+  loadActivities(take: number, skip?: number) {
+    this.helperService.showSpinner('Loading Activities...');
+    this.store.dispatch(new FetchAllActivities({take: 10, skip})).subscribe(() => {
+      this.helperService.hideSpinner();
+    });
+  }
+
+
+  get Activities() {
+    return this.gdService.Activities;
+  }
+
+  get GlobalData() {
+    return this.gdService.GlobalData;
   }
 }

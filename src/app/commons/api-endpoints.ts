@@ -19,6 +19,9 @@ export const ApiEndpoints = {
   ProfileEndpoints: {
     rootProfile: `${prefixRoute}/profiles`
   },
+  ActivityEndpoints: {
+    rootActivities: `${prefixRoute}/activities`
+  },
   ProductEndpoints: {
     rootProducts: `${prefixRoute}/products`,
     filteredByRange: `${prefixRoute}/products/filtered-by-range`,

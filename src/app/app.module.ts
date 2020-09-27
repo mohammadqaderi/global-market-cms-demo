@@ -24,6 +24,7 @@ import {ErrorInterceptor} from './services/auth/error.interceptor';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {CheckConnectionInterceptor} from './shared/services/interceptors/check-connection.interceptor';
 import {ErrorComponent} from './layouts/error/error.component';
+import {SocketIoModule} from "ngx-socket-io";
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import {ErrorComponent} from './layouts/error/error.component';
       key: StatesNames,
       storage: StorageOption.LocalStorage
     }),
+    SocketIoModule.forRoot(environment.socketIoConfig),
     SharedModule,
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production})
   ],

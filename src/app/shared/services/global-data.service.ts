@@ -12,29 +12,32 @@ import {PaymentState} from '../../state-management/payment/payment.state';
 import {OrderState} from '../../state-management/order/order.state';
 import {Logout} from '../../state-management/auth/auth-actions';
 import {ProfileActions} from '../../state-management/profile/profile.actions';
-import ClearProfileData = ProfileActions.ClearProfileData;
 import {InvoiceActions} from '../../state-management/invoice/invoice.actions';
-import ClearInvoicesFromStorage = InvoiceActions.ClearInvoicesFromStorage;
 import {OrderActions} from '../../state-management/order/order.actions';
-import ClearOrdersFromStorage = OrderActions.ClearOrdersFromStorage;
 import {PaymentActions} from '../../state-management/payment/payment.actions';
-import ClearPaymentsFromStorage = PaymentActions.ClearPaymentsFromStorage;
 import {SubCategoryActions} from '../../state-management/sub-category/sub-category.actions';
 import {CategoryActions} from '../../state-management/category/category.actions';
 import {ProductActions} from '../../state-management/product/product.actions';
-import ClearProducts = ProductActions.ClearProducts;
 import {TagActions} from '../../state-management/tag/tag.actions';
+import {UserState} from '../../state-management/user/user.state';
+import {UserActions} from '../../state-management/user/user.actions';
+import {GlobalDataState} from '../../state-management/global-data/global-data.state';
+import {NotificationActions} from '../../state-management/notification/notification.actions';
+import {ClearGlobalData} from '../../state-management/global-data/global-data.actions';
+import {NotificationState} from '../../state-management/notification/notification.state';
+import {ClearActivities} from '../../state-management/activity/activity.actions';
+import {ActivityState} from '../../state-management/activity/activity.state';
+import {UserRole} from '../../commons/enums/user-role.enum';
+import ClearProfileData = ProfileActions.ClearProfileData;
+import ClearInvoicesFromStorage = InvoiceActions.ClearInvoicesFromStorage;
+import ClearOrdersFromStorage = OrderActions.ClearOrdersFromStorage;
+import ClearPaymentsFromStorage = PaymentActions.ClearPaymentsFromStorage;
+import ClearProducts = ProductActions.ClearProducts;
 import ClearTags = TagActions.ClearTags;
 import ClearCategory = CategoryActions.ClearCategory;
 import ClearSubCategory = SubCategoryActions.ClearSubCategory;
-import {UserState} from '../../state-management/user/user.state';
-import {UserActions} from '../../state-management/user/user.actions';
 import ClearUsersFromStorage = UserActions.ClearUsersFromStorage;
-import {GlobalDataState} from '../../state-management/global-data/global-data.state';
-import {NotificationActions} from '../../state-management/notification/notification.actions';
 import ClearNotifications = NotificationActions.ClearNotifications;
-import {ClearGlobalData} from '../../state-management/global-data/global-data.actions';
-import {NotificationState} from '../../state-management/notification/notification.state';
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +49,10 @@ export class GlobalDataService {
 
   get User() {
     return this.store.selectSnapshot(AuthState.Admin);
+  }
+
+  get Username() {
+    return this.store.selectSnapshot(AuthState.Username);
   }
 
   get Categories() {
@@ -62,6 +69,10 @@ export class GlobalDataService {
 
   get Tags() {
     return this.store.selectSnapshot(TagState.Tags);
+  }
+
+  isSuperAdmin() {
+    return this.User.claims.some(c => c === UserRole.SUPER_ADMIN);
   }
 
   get Users() {
@@ -104,6 +115,10 @@ export class GlobalDataService {
     return this.store.selectSnapshot(NotificationState.Subscribers);
   }
 
+  get Activities() {
+    return this.store.selectSnapshot(ActivityState.Activities);
+  }
+
   getInvoiceNumber(id) {
     if (this.Invoices) {
       const invoice = this.Invoices.find(i => i.id === id);
@@ -136,6 +151,7 @@ export class GlobalDataService {
       new ClearSubCategory(),
       new ClearNotifications(),
       new ClearGlobalData(),
+      new ClearActivities(),
       new ClearUsersFromStorage(),
       new ClearTags()]);
   }

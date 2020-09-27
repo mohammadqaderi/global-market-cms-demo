@@ -6,6 +6,9 @@ import {SubCategoryModel} from '../../../models/Categories/sub-category.model';
 import {Store} from '@ngxs/store';
 import {ProductActions} from '../../../state-management/product/product.actions';
 import AddNewProduct = ProductActions.AddNewProduct;
+import {PushClientActivity} from '../../../state-management/activity/activity.actions';
+import {ActivityType} from '../../../commons/enums/activity-type.enum';
+import {GlobalDataService} from '../../../shared/services/global-data.service';
 
 @Component({
   selector: 'app-add-product',
@@ -22,6 +25,7 @@ export class AddProductComponent implements OnInit, OnDestroy {
   @Input() helperService: HelperService;
   @Input() products: ProductModel[];
   @Input() subCategories: SubCategoryModel[];
+  @Input() gdService: GlobalDataService;
   @Output()
   change: EventEmitter<any> = new EventEmitter<any>();
 
@@ -56,7 +60,14 @@ export class AddProductComponent implements OnInit, OnDestroy {
     for (let i = 0; i < this.helperService.files.length; i++) {
       this.formData.append('images', this.helperService.files[i]);
     }
-    this.helperService.showSpinner('Please wait...');
+    this.helperService.showSpinner('Uploading Product...');
+
+    this.store.dispatch(new PushClientActivity({
+      user: this.gdService.Username,
+      action: ActivityType.CREATING,
+      description: `${this.gdService.Username} has create a new product`
+    }));
+
     const subCategory = this.subCategories.find(s => s.id === +this.addProductForm.value.subCategoryId);
     this.store.dispatch(new AddNewProduct(+this.addProductForm.value.subCategoryId, this.formData,
       subCategory.name || 'Any Name')).subscribe(() => {

@@ -14,6 +14,8 @@ import {TagState} from '../../../state-management/tag/tag.state';
 import {TagActions} from '../../../state-management/tag/tag.actions';
 import FetchAllTags = TagActions.FetchAllTags;
 import DeleteSubCategory = SubCategoryActions.DeleteSubCategory;
+import {PushClientActivity} from '../../../state-management/activity/activity.actions';
+import {ActivityType} from '../../../commons/enums/activity-type.enum';
 
 @Component({
   selector: 'app-sub-categories',
@@ -65,7 +67,12 @@ export class SubCategoriesComponent implements OnInit {
   }
 
   deleteSubCategory(id: number) {
-    this.helperService.showSpinner('Deleting Sub Category');
+    this.helperService.showSpinner('Deleting Sub Category...');
+    this.store.dispatch(new PushClientActivity({
+      user: this.gdService.Username,
+      action: ActivityType.DELETING,
+      description: `${this.gdService.Username} has delete a sub-category`
+    }));
     this.store.dispatch(new DeleteSubCategory(id)).subscribe(() => {
       this.helperService.subCategoryDataSource.data = this.gdService.SubCategories;
       this.helperService.productDataSource.data = this.gdService.Products;

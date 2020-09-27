@@ -95,6 +95,7 @@
                 <ng-template #updateTemp>
                   <app-update-product [product]="product" [store]="store" [helperService]="helperService"
                                       [products]="Products"
+                                      [gdService]="gdService"
                                       (change)="refreshProducts()"
                   ></app-update-product>
                 </ng-template>
@@ -169,5 +170,6 @@
 <ng-template #creationTemp>
   <app-add-product (change)="refreshProducts()" [subCategories]="gdService.SubCategories"
                    [helperService]="helperService"
+                   [gdService]="gdService"
                    [products]="Products"></app-add-product>
 </ng-template>

@@ -5,6 +5,9 @@ import {HelperService} from '../../../shared/services/helper.service';
 import {Store} from '@ngxs/store';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {UserActions} from '../../../state-management/user/user.actions';
+import {PushClientActivity} from '../../../state-management/activity/activity.actions';
+import {GlobalDataService} from '../../../shared/services/global-data.service';
+import {ActivityType} from '../../../commons/enums/activity-type.enum';
 import EditUserRoles = UserActions.EditUserRoles;
 
 @Component({
@@ -18,6 +21,7 @@ export class EditUsersRolesComponent implements OnInit {
   @Input() user: UserModel;
   @Input() helperService: HelperService;
   @Input() store: Store;
+  @Input() gdService: GlobalDataService;
   @Output()
   change: EventEmitter<any> = new EventEmitter<any>();
 
@@ -45,6 +49,12 @@ export class EditUsersRolesComponent implements OnInit {
   }
 
   editUserRoles() {
+    let admin = this.gdService.User.username;
+    this.store.dispatch(new PushClientActivity({
+      user: admin,
+      action: ActivityType.UPDATING,
+      description: `${admin} has update the roles of the user ${this.user.username}`
+    }));
     this.helperService.showSpinner(`Updating ${this.user.username} Roles...`);
     this.store.dispatch(new EditUserRoles(this.user, {roles: this.roles})).subscribe(() => {
       this.helperService.hideSpinner();

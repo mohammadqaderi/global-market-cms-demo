@@ -8,6 +8,9 @@ import {CustomValidators} from 'ngx-custom-validators';
 import {EmailPattern} from '../../../commons/constants';
 import {RegisterAdmin} from '../../../state-management/auth/auth-actions';
 import {ErrorMessages} from '../../../commons/helpers/functions/error-messages';
+import {PushClientActivity} from '../../../state-management/activity/activity.actions';
+import {ActivityType} from '../../../commons/enums/activity-type.enum';
+
 @Component({
   selector: 'app-register-admin',
   templateUrl: './register-admin.component.html',
@@ -62,6 +65,11 @@ export class RegisterAdminComponent implements OnInit {
 
   submitRegister() {
     this.helperService.showSpinner('Please Wait...');
+    this.store.dispatch(new PushClientActivity({
+      user: this.registrationForm.value.username,
+      action: ActivityType.REGISTER,
+      description: `${this.gdService.Username} has register in our system`
+    }));
     const data = {
       username: this.registrationForm.value.username,
       email: this.registrationForm.value.email,
@@ -74,7 +82,7 @@ export class RegisterAdminComponent implements OnInit {
     }, error => {
       this.helperService.showErrorDialog(error, this.errorTemplate);
 
-    })
+    });
   }
 
 }

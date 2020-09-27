@@ -4,6 +4,9 @@ import {AuthService} from '../../../services/auth/auth.service';
 import {HelperService} from '../../../shared/services/helper.service';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {MustMatch} from '../../../shared/validators/must-match.validator';
+import {PushClientActivity} from '../../../state-management/activity/activity.actions';
+import {ActivityType} from '../../../commons/enums/activity-type.enum';
+import {Store} from '@ngxs/store';
 
 @Component({
   selector: 'app-reset-password',
@@ -19,6 +22,7 @@ export class ResetPasswordComponent implements OnInit {
               private fb: FormBuilder,
               public helperService: HelperService,
               private router: Router,
+              private store: Store,
               private route: ActivatedRoute) {
     route.paramMap.subscribe((params: ParamMap) => {
       if (!params.get('newPasswordToken')) {
@@ -46,6 +50,11 @@ export class ResetPasswordComponent implements OnInit {
 
   resetPassword() {
     this.helperService.showSpinner('Resetting Password...');
+    this.store.dispatch(new PushClientActivity({
+      user: 'Not Defined',
+      action: ActivityType.RESET_PASSWORD,
+      description: 'a non defined user has reset his password'
+    }));
     this.authService.resetPassword(this.resetPasswordDto.value).subscribe(() => {
       this.helperService.hideSpinner();
       this.helperService.openSnackbar('Password Changed Successfully', 'Okay');

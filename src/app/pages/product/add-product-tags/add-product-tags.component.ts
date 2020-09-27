@@ -5,6 +5,8 @@ import {GlobalDataService} from '../../../shared/services/global-data.service';
 import {Store} from '@ngxs/store';
 import {ProductActions} from '../../../state-management/product/product.actions';
 import AddTagsToProduct = ProductActions.AddTagsToProduct;
+import {PushClientActivity} from '../../../state-management/activity/activity.actions';
+import {ActivityType} from '../../../commons/enums/activity-type.enum';
 
 @Component({
   selector: 'app-add-product-tags',
@@ -30,6 +32,12 @@ export class AddProductTagsComponent implements OnInit, OnDestroy {
     for (let i = 0; i < this.helperService.transitionTags.length; i++) {
       tags = [...tags, this.helperService.transitionTags[i].id];
     }
+    this.helperService.showSpinner('Adding Tags...');
+    this.store.dispatch(new PushClientActivity({
+      user: this.gdService.Username,
+      action: ActivityType.PUSHING,
+      description: `${this.gdService.Username} has push a new tag to product: ${this.product.name}`
+    }));
     this.store.dispatch(new AddTagsToProduct(this.product.id, {tags})).subscribe(() => {
       this.helperService.hideDialog();
       this.helperService.openSnackbar(`Tags added successfully into product`, 'Okay');

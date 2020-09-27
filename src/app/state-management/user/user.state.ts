@@ -3,7 +3,7 @@ import {UserActions, UserStateModel} from './user.actions';
 import {Injectable} from '@angular/core';
 import ClearUsersFromStorage = UserActions.ClearUsersFromStorage;
 import FetchSystemUsers = UserActions.FetchSystemUsers;
-import {UserService} from '../../services/user.service';
+import {UserService} from '../../services/user/user.service';
 import {tap} from 'rxjs/operators';
 import {UserModel} from '../../models/Auth/user.model';
 import EditUserRoles = UserActions.EditUserRoles;

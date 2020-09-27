@@ -8,6 +8,8 @@ import {TagDto} from '../../../commons/public-dto/tag.dto';
 import AddNewTag = TagActions.AddNewTag;
 import UpdateTag = TagActions.UpdateTag;
 import DeleteTag = TagActions.DeleteTag;
+import {PushClientActivity} from '../../../state-management/activity/activity.actions';
+import {ActivityType} from '../../../commons/enums/activity-type.enum';
 
 @Component({
   selector: 'app-tags',
@@ -45,7 +47,12 @@ export class TagsComponent implements OnInit {
   }
 
   updateTag(id: number) {
-    this.helperService.showSpinner('Adding Tag...');
+    this.helperService.showSpinner('Updating Tag...');
+    this.store.dispatch(new PushClientActivity({
+      user: this.gdService.Username,
+      action: ActivityType.UPDATING,
+      description: `${this.gdService.Username} has update a tag`
+    }));
     this.store.dispatch(new UpdateTag(id, this.updateTagDto)).subscribe(() => {
       this.helperService.hideSpinner();
       this.helperService.hideDialog();
@@ -55,6 +62,11 @@ export class TagsComponent implements OnInit {
 
   deleteTag(id: number) {
     this.helperService.showSpinner('Deleting Tag...');
+    this.store.dispatch(new PushClientActivity({
+      user: this.gdService.Username,
+      action: ActivityType.DELETING,
+      description: `${this.gdService.Username} has delete a tag`
+    }));
     this.store.dispatch(new DeleteTag(id)).subscribe(() => {
       this.helperService.hideSpinner();
       this.helperService.openSnackbar('Tag deleted successfully', 'okay');
@@ -63,6 +75,11 @@ export class TagsComponent implements OnInit {
 
   addNewTag() {
     this.helperService.showSpinner('Adding Tag...');
+    this.store.dispatch(new PushClientActivity({
+      user: this.gdService.Username,
+      action: ActivityType.CREATING,
+      description: `${this.gdService.Username} has create a new tag`
+    }));
     this.store.dispatch(new AddNewTag(this.createTagDto)).subscribe(() => {
       this.helperService.hideSpinner();
       this.helperService.hideDialog();

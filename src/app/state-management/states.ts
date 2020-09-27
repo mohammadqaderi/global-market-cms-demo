@@ -11,6 +11,7 @@ import {UserState} from './user/user.state';
 import {PaymentState} from './payment/payment.state';
 import {GlobalDataState} from './global-data/global-data.state';
 import {NotificationState} from './notification/notification.state';
+import {ActivityState} from './activity/activity.state';
 
 export const StatesNames = [
   'auth',
@@ -25,7 +26,8 @@ export const StatesNames = [
   'users',
   'products',
   'notificationsData',
-  'globalData'
+  'globalData',
+  'activities'
 ];
 export const States = [
   AuthState,
@@ -40,5 +42,6 @@ export const States = [
   OrderState,
   UserState,
   NotificationState,
-  GlobalDataState
+  GlobalDataState,
+  ActivityState
 ];

@@ -6,6 +6,8 @@ import {Store} from '@ngxs/store';
 import {editorConfig} from '../../../commons/constants';
 import {NotificationActions} from '../../../state-management/notification/notification.actions';
 import SendNewNotification = NotificationActions.SendNewNotification;
+import {PushClientActivity} from '../../../state-management/activity/activity.actions';
+import {ActivityType} from '../../../commons/enums/activity-type.enum';
 
 @Component({
   selector: 'app-push-notification',
@@ -27,6 +29,11 @@ export class PushNotificationComponent implements OnInit {
 
   sendNotification() {
     this.helperService.showSpinner('Sending Notification, Please Wait...');
+    this.store.dispatch(new PushClientActivity({
+      user: this.gdService.User.username,
+      action: ActivityType.SEND_NOTIFICATION,
+      description: `${this.gdService.User.username} has send a new notification to the users`
+    }));
     this.store.dispatch(new SendNewNotification(this.notificationPayloadDto)).subscribe(() => {
       this.helperService.hideSpinner();
       this.helperService.openSnackbar('Notification sent successfully', 'Okay');
