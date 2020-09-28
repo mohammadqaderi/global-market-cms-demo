@@ -46,3 +46,7 @@
     {{helperService.state}}
   </p>
 </ngx-spinner>
+<ng-template #errorTemplate>
+  <app-show-error-dialog
+    [error]="helperService.error"></app-show-error-dialog>
+</ng-template>

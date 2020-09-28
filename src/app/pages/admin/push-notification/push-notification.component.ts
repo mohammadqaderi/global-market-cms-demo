@@ -37,6 +37,9 @@ export class PushNotificationComponent implements OnInit {
     this.store.dispatch(new SendNewNotification(this.notificationPayloadDto)).subscribe(() => {
       this.helperService.hideSpinner();
       this.helperService.openSnackbar('Notification sent successfully', 'Okay');
+    }, error => {
+      this.helperService.hideDialog();
+      this.helperService.showErrorDialog(error, this.errorTemplate);
     });
   }
 

@@ -49,6 +49,7 @@ export class NotificationsComponent implements OnInit {
       this.store.dispatch(new FetchAllSubscribers()).subscribe(() => {
         this.helperService.hideSpinner();
       }, error => {
+        this.helperService.hideDialog();
         this.helperService.showErrorDialog(error, this.errorTemplate);
       });
     }

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Store} from '@ngxs/store';
 import {ErrorMessages} from '../../../commons/helpers/functions/error-messages';
@@ -20,6 +20,7 @@ export class CreateProfileComponent implements OnInit, OnDestroy {
   errorMessages = new ErrorMessages();
   createProfileForm: FormGroup;
   formSubmitted = false;
+  @ViewChild('errorTemplate', {static: true}) errorTemplate: TemplateRef<any>;
 
   constructor(private fb: FormBuilder,
               private store: Store,
@@ -65,6 +66,9 @@ export class CreateProfileComponent implements OnInit, OnDestroy {
       this.helperService.hideSpinner();
       this.helperService.adjustData();
       this.router.navigate(['/dashboard']);
+    }, error => {
+      this.helperService.hideDialog();
+      this.helperService.showErrorDialog(error, this.errorTemplate);
     });
   }
 

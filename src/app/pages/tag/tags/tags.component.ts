@@ -57,6 +57,9 @@ export class TagsComponent implements OnInit {
       this.helperService.hideSpinner();
       this.helperService.hideDialog();
       this.helperService.openSnackbar('Tag updated successfully', 'okay');
+    }, error => {
+      this.helperService.hideDialog();
+      this.helperService.showErrorDialog(error, this.errorTemplate);
     });
   }
 
@@ -70,6 +73,9 @@ export class TagsComponent implements OnInit {
     this.store.dispatch(new DeleteTag(id)).subscribe(() => {
       this.helperService.hideSpinner();
       this.helperService.openSnackbar('Tag deleted successfully', 'okay');
+    }, error => {
+      this.helperService.hideDialog();
+      this.helperService.showErrorDialog(error, this.errorTemplate);
     });
   }
 
@@ -85,6 +91,10 @@ export class TagsComponent implements OnInit {
       this.helperService.hideDialog();
       this.clearName();
       this.helperService.openSnackbar('Tag added successfully', 'okay');
+    }, error => {
+      this.helperService.hideDialog();
+      this.helperService.showErrorDialog(error, this.errorTemplate);
+
     });
   }
 

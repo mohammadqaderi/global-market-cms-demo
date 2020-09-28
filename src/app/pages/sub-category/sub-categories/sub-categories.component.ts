@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {HelperService} from '../../../shared/services/helper.service';
@@ -26,7 +26,7 @@ export class SubCategoriesComponent implements OnInit {
   displayedColumns: string[] = ['id', 'name', 'createdAt', 'updatedAt', 'totalProducts', 'category', 'actions'];
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
-
+  @ViewChild('errorTemplate', {static: true}) errorTemplate: TemplateRef<any>;
   constructor(public helperService: HelperService,
               public gdService: GlobalDataService,
               public store: Store) {
@@ -78,6 +78,9 @@ export class SubCategoriesComponent implements OnInit {
       this.helperService.productDataSource.data = this.gdService.Products;
       this.helperService.hideSpinner();
       this.helperService.openSnackbar('Sub Category deleted successfully', 'okay');
+    }, error => {
+      this.helperService.hideDialog();
+      this.helperService.showErrorDialog(error, this.errorTemplate);
     });
   }
 

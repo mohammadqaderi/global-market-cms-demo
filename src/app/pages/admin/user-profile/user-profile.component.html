@@ -186,6 +186,10 @@
     </div>
   </div>
 </div>
+<ng-template #errorTemplate>
+  <app-show-error-dialog
+    [error]="helperService.error"></app-show-error-dialog>
+</ng-template>
 <ng-template #template>
   <div class="modal-body text-center">
     <p>Do you want to confirm?</p>

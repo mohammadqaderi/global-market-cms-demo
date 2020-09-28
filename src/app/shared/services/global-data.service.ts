@@ -72,7 +72,7 @@ export class GlobalDataService {
   }
 
   isSuperAdmin() {
-    return this.User.claims.some(c => c === UserRole.SUPER_ADMIN);
+    return this.User.claims.some(c => c === 'SUPER_ADMIN');
   }
 
   get Users() {

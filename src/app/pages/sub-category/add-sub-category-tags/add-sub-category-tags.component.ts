@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {HelperService} from '../../../shared/services/helper.service';
 import {GlobalDataService} from '../../../shared/services/global-data.service';
 import {Store} from '@ngxs/store';
@@ -20,6 +20,7 @@ export class AddSubCategoryTagsComponent implements OnInit, OnDestroy {
   @Input() store: Store;
   @Output()
   change: EventEmitter<any> = new EventEmitter<any>();
+  @ViewChild('errorTemplate', {static: true}) errorTemplate: TemplateRef<any>;
 
   constructor() {
   }
@@ -42,6 +43,9 @@ export class AddSubCategoryTagsComponent implements OnInit, OnDestroy {
       this.helperService.openSnackbar(`Tags added successfully into sub-category`, 'Okay');
       this.helperService.startPushing = false;
       this.change.emit();
+    }, error => {
+      this.helperService.hideDialog();
+      this.helperService.showErrorDialog(error, this.errorTemplate);
     });
 
   }

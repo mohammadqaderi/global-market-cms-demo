@@ -85,6 +85,9 @@ export class ProductsComponent implements OnInit {
       this.refreshProducts();
       this.helperService.hideSpinner();
       this.helperService.openSnackbar('Product deleted successfully', 'okay');
+    }, error => {
+      this.helperService.hideDialog();
+      this.helperService.showErrorDialog(error, this.errorTemplate);
     });
   }
 

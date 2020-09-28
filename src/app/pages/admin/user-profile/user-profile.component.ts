@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Store} from '@ngxs/store';
 import {FileUploader} from 'ng2-file-upload';
@@ -25,7 +25,7 @@ export class UserProfileComponent implements OnInit {
   errorMessages = new ErrorMessages();
   public uploader: FileUploader = new FileUploader({});
   startUploadingImage = false;
-
+  @ViewChild('errorTemplate', {static: true}) errorTemplate: TemplateRef<any>;
   constructor(private fb: FormBuilder,
               private store: Store,
               public helperService: HelperService,
@@ -115,6 +115,10 @@ export class UserProfileComponent implements OnInit {
       this.helperService.openSnackbar('Image uploaded successfully', 'Okay');
       this.helperService.adjustData();
       this.startUploadingImage = false;
+    }, error => {
+      this.helperService.hideDialog();
+      this.helperService.showErrorDialog(error, this.errorTemplate);
+
     });
 
   }
@@ -130,6 +134,10 @@ export class UserProfileComponent implements OnInit {
     this.store.dispatch(new EditProfile(this.updateProfileForm.value)).subscribe(() => {
       this.helperService.hideSpinner();
       this.helperService.openSnackbar('Profile Updated Successfully', 'Okay');
+    }, error => {
+      this.helperService.hideDialog();
+      this.helperService.showErrorDialog(error, this.errorTemplate);
+
     });
   }
 

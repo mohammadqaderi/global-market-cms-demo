@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {HelperService} from '../../../shared/services/helper.service';
 import {GlobalDataService} from '../../../shared/services/global-data.service';
 import {Store} from '@ngxs/store';
@@ -23,6 +23,7 @@ export class RemoveSubCategoryTagsComponent implements OnInit {
   @Input() store: Store;
   @Output()
   change: EventEmitter<any> = new EventEmitter<any>();
+  @ViewChild('errorTemplate', {static: true}) errorTemplate: TemplateRef<any>;
 
   constructor() {
   }
@@ -71,6 +72,9 @@ export class RemoveSubCategoryTagsComponent implements OnInit {
       this.helperService.openSnackbar(`Tags removed successfully from sub-category`, 'Okay');
       this.helperService.startPushing = false;
       this.change.emit();
+    }, error => {
+      this.helperService.hideDialog();
+      this.helperService.showErrorDialog(error, this.errorTemplate);
     });
   }
 

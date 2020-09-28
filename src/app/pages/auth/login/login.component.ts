@@ -89,6 +89,7 @@ export class LoginComponent implements OnInit {
         }
       }
     }, error => {
+      this.helperService.hideDialog();
       this.helperService.showErrorDialog(error, this.errorTemplate);
     });
   }

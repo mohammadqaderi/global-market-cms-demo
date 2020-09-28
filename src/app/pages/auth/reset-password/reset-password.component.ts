@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../../services/auth/auth.service';
 import {HelperService} from '../../../shared/services/helper.service';
@@ -17,7 +17,7 @@ export class ResetPasswordComponent implements OnInit {
 
   resetPasswordDto: FormGroup;
   private newPasswordToken: string;
-
+  @ViewChild('errorTemplate', {static: true}) errorTemplate: TemplateRef<any>;
   constructor(private authService: AuthService,
               private fb: FormBuilder,
               public helperService: HelperService,
@@ -59,6 +59,9 @@ export class ResetPasswordComponent implements OnInit {
       this.helperService.hideSpinner();
       this.helperService.openSnackbar('Password Changed Successfully', 'Okay');
       this.router.navigate(['/auth/login']);
+    }, error => {
+      this.helperService.hideDialog();
+      this.helperService.showErrorDialog(error, this.errorTemplate);
     });
   }
 

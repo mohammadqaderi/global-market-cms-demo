@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {Store} from '@ngxs/store';
 import {GlobalDataService} from '../../../shared/services/global-data.service';
 import {HelperService} from '../../../shared/services/helper.service';
@@ -24,6 +24,7 @@ export class CategoriesComponent implements OnInit {
   displayedColumns: string[] = ['id', 'name', 'createdAt', 'updatedAt', 'actions'];
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild('errorTemplate', {static: true}) errorTemplate: TemplateRef<any>;
 
   createCategoryDto: CategoryDto = new CategoryDto();
   updateCategoryDto: CategoryDto = new CategoryDto();
@@ -67,6 +68,9 @@ export class CategoriesComponent implements OnInit {
       this.afterFinishProcess();
       this.clearCreateDto();
       this.helperService.openSnackbar('Category added successfully', 'okay');
+    }, error => {
+      this.helperService.hideDialog();
+      this.helperService.showErrorDialog(error, this.errorTemplate);
     });
   }
 
@@ -86,6 +90,9 @@ export class CategoriesComponent implements OnInit {
     this.store.dispatch(new UpdateCategory(id, this.updateCategoryDto)).subscribe(() => {
       this.afterFinishProcess();
       this.helperService.openSnackbar('Category updated successfully', 'okay');
+    }, error => {
+      this.helperService.hideDialog();
+      this.helperService.showErrorDialog(error, this.errorTemplate);
     });
   }
 
@@ -107,6 +114,9 @@ export class CategoriesComponent implements OnInit {
       this.helperService.productDataSource.data = this.gdService.Products;
       this.helperService.hideSpinner();
       this.helperService.openSnackbar('Category deleted successfully', 'okay');
+    }, error => {
+      this.helperService.hideDialog();
+      this.helperService.showErrorDialog(error, this.errorTemplate);
     });
   }
 }

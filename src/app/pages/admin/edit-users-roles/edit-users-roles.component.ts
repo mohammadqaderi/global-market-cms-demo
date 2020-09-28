@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {UserRole} from '../../../commons/enums/user-role.enum';
 import {UserModel} from '../../../models/Auth/user.model';
 import {HelperService} from '../../../shared/services/helper.service';
@@ -24,6 +24,7 @@ export class EditUsersRolesComponent implements OnInit {
   @Input() gdService: GlobalDataService;
   @Output()
   change: EventEmitter<any> = new EventEmitter<any>();
+  @ViewChild('errorTemplate', {static: true}) errorTemplate: TemplateRef<any>;
 
   constructor() {
   }
@@ -61,6 +62,9 @@ export class EditUsersRolesComponent implements OnInit {
       this.helperService.hideDialog();
       this.helperService.openSnackbar('User Claims updated successfully', 'okay');
       this.change.emit();
+    }, error => {
+      this.helperService.hideDialog();
+      this.helperService.showErrorDialog(error, this.errorTemplate);
     });
   }
 

@@ -78,7 +78,8 @@
                 </button>
                 <ng-template #updateTemp>
                   <app-update-sub-category
-                    [store]="store" [helperService]="helperService" (change)="refreshSubCategories()"
+                    [store]="store" [gdService]="gdService" [helperService]="helperService"
+                    (change)="refreshSubCategories()"
                     [subCategories]="SubCategories" [subCategory]="subCategory"></app-update-sub-category>
                 </ng-template>
                 <button (click)="helperService.openModal(deleteTemplate)"
@@ -143,4 +144,7 @@
                         [gdService]="gdService"
                         [subCategories]="SubCategories"
                         [categories]="gdService.Categories"></app-add-sub-category>
+</ng-template>
+<ng-template #errorTemplate>
+  <app-show-error-dialog [error]="helperService.error"></app-show-error-dialog>
 </ng-template>

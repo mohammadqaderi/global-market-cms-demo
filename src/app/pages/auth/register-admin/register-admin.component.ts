@@ -80,8 +80,8 @@ export class RegisterAdminComponent implements OnInit {
       this.router.navigate(['/auth/create-profile']);
 
     }, error => {
+      this.helperService.hideDialog();
       this.helperService.showErrorDialog(error, this.errorTemplate);
-
     });
   }
 

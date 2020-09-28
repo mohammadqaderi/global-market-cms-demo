@@ -127,7 +127,10 @@
     {{helperService.state}}
   </p>
 </ngx-spinner>
-
+<ng-template #errorTemplate>
+  <app-show-error-dialog
+    [error]="helperService.error"></app-show-error-dialog>
+</ng-template>
 <ng-template #creationTemp>
   <h2 mat-dialog-title>Fill Category Data</h2>
   <mat-dialog-content class="mat-typography" style="max-width: 500px; width: 500px;">
