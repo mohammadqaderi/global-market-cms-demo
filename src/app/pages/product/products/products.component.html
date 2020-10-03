@@ -60,7 +60,7 @@
 
           <ng-container matColumnDef="previousPrice">
             <th mat-header-cell mat-sort-header *matHeaderCellDef> Previous Price</th>
-            <td mat-cell *matCellDef="let product"> {{product.previousPrice}} </td>
+            <td mat-cell *matCellDef="let product"> {{product.previousPrice || 'Not Defined'}} </td>
           </ng-container>
 
           <ng-container matColumnDef="tags">
@@ -120,6 +120,7 @@
                 </button>
                 <ng-template #imagesTemplate>
                   <app-manage-product-images (change)="refreshProducts()"
+                                             [gdService]="gdService"
                                              [product]="product" [subCategories]="gdService.SubCategories"
                                              [helperService]="helperService"
                                              [store]="store"></app-manage-product-images>

@@ -5,7 +5,6 @@ import {Store} from '@ngxs/store';
 import {ProductActions} from '../../../state-management/product/product.actions';
 import ManageProductImages = ProductActions.ManageProductImages;
 import {SubCategoryModel} from '../../../models/Categories/sub-category.model';
-import {ProductService} from '../../../services/product/product.service';
 import {PushClientActivity} from '../../../state-management/activity/activity.actions';
 import {ActivityType} from '../../../commons/enums/activity-type.enum';
 import {GlobalDataService} from '../../../shared/services/global-data.service';
@@ -28,7 +27,7 @@ export class ManageProductImagesComponent implements OnInit, OnDestroy {
   @Output() change: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('errorTemplate', {static: true}) errorTemplate: TemplateRef<any>;
 
-  constructor(private productService: ProductService) {
+  constructor() {
   }
 
   removeImage(img) {
