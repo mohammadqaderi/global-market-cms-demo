@@ -8,6 +8,7 @@ import UpdateProduct = ProductActions.UpdateProduct;
 import {PushClientActivity} from '../../../state-management/activity/activity.actions';
 import {ActivityType} from '../../../commons/enums/activity-type.enum';
 import {GlobalDataService} from '../../../shared/services/global-data.service';
+import {SubCategoryModel} from "../../../models/Categories/sub-category.model";
 
 @Component({
   selector: 'app-update-product',
@@ -24,6 +25,7 @@ export class UpdateProductComponent implements OnInit, OnDestroy {
   @Output()
   change: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('errorTemplate', {static: true}) errorTemplate: TemplateRef<any>;
+  subCategory: SubCategoryModel;
 
   constructor(private fb: FormBuilder) {
   }
@@ -35,7 +37,10 @@ export class UpdateProductComponent implements OnInit, OnDestroy {
       currentPrice: new FormControl(this.product.currentPrice, [Validators.required]),
       quantity: new FormControl(this.product.quantity, [Validators.required]),
     });
-    this.helperService.prepareUpdateReferenceProcess(this.products, this.product);
+    const subCategory = this.gdService.SubCategories.find(sc => sc.id === this.product.subCategoryId);
+    this.subCategory = subCategory;
+    const subCategoryProducts = [].concat(subCategory.products);
+    this.helperService.prepareUpdateReferenceProcess(subCategoryProducts, this.product);
 
   }
 

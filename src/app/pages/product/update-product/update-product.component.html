@@ -30,7 +30,8 @@
       <div class="col-lg-4">
         <div class="form-group">
           <label for="currentPrice" class="form-control-label"> Current Price</label>
-          <input class="form-control" type="number" id="currentPrice" formControlName="currentPrice" placeholder="Ex. 40.99">
+          <input class="form-control" type="number" id="currentPrice" formControlName="currentPrice"
+                 placeholder="Ex. 40.99">
         </div>
       </div>
     </div>
@@ -39,14 +40,18 @@
   <div class="row">
     <div class="col-md-8">
       <mat-form-field class="example-full-width">
-        <mat-label> Reference Product</mat-label>
-        <mat-select multiple [(ngModel)]="helperService.selectedReferences">
+        <mat-label> {{subCategory.products.length === 0 ? "You can't add a references products for now" : 'Reference Product'}}</mat-label>
+        <mat-select [disabled]="subCategory.products.length === 0" multiple
+                    [(ngModel)]="helperService.selectedReferences">
           <mat-option [value]="{id: ref.id, name: ref.name}"
                       *ngFor="let ref of helperService.referenceItems; let i = index">
             {{ref.name}}
           </mat-option>
         </mat-select>
-        <mat-hint>This Field is optional</mat-hint>
+        <mat-hint>
+          This Field is optional
+        </mat-hint>
+
       </mat-form-field>
     </div>
     <div class="col-md-4">

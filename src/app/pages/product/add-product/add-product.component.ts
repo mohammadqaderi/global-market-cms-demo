@@ -28,6 +28,7 @@ export class AddProductComponent implements OnInit, OnDestroy {
   @Input() gdService: GlobalDataService;
   @Output()
   change: EventEmitter<any> = new EventEmitter<any>();
+  subCategory: SubCategoryModel;
 
   constructor(private fb: FormBuilder, private store: Store) {
   }
@@ -40,7 +41,13 @@ export class AddProductComponent implements OnInit, OnDestroy {
       currentPrice: new FormControl(null, [Validators.required]),
       quantity: new FormControl(null, [Validators.required]),
     });
-    for (let i = 0; i < this.products.length; i++) {
+  }
+
+  getSubCategoryProducts() {
+    const subCategory = this.subCategories.find(sc => sc.id === +this.addProductForm.value.subCategoryId);
+    this.subCategory = subCategory;
+    this.helperService.referenceItems = [];
+    for (let i = 0; i < subCategory.products.length; i++) {
       this.helperService.referenceItems.push({id: this.products[i].id, name: this.products[i].name});
     }
   }
