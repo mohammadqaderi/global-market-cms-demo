@@ -39,9 +39,10 @@ export class AddSubCategoryTagsComponent implements OnInit, OnDestroy {
       description: `${this.gdService.Username} has pushed a new tags to sub-category: ${this.subCategory.name}`
     }));
     this.store.dispatch(new AddTagsToSubCategory(this.subCategory.id, {tags})).subscribe(() => {
-      this.helperService.hideDialog();
-      this.helperService.openSnackbar(`Tags added successfully into sub-category`, 'Okay');
       this.helperService.startPushing = false;
+      this.helperService.hideDialog();
+      this.helperService.hideSpinner();
+      this.helperService.openSnackbar(`Tags added successfully into sub-category`, 'Okay');
       this.change.emit();
     }, error => {
       this.helperService.hideDialog();

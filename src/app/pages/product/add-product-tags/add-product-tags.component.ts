@@ -22,6 +22,7 @@ export class AddProductTagsComponent implements OnInit, OnDestroy {
   @Output()
   change: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('errorTemplate', {static: true}) errorTemplate: TemplateRef<any>;
+
   constructor() {
   }
 
@@ -39,9 +40,10 @@ export class AddProductTagsComponent implements OnInit, OnDestroy {
       description: `${this.gdService.Username} has push a new tag to product: ${this.product.name}`
     }));
     this.store.dispatch(new AddTagsToProduct(this.product.id, {tags})).subscribe(() => {
+      this.helperService.startPushing = false;
+      this.helperService.hideSpinner();
       this.helperService.hideDialog();
       this.helperService.openSnackbar(`Tags added successfully into product`, 'Okay');
-      this.helperService.startPushing = false;
       this.change.emit();
     }, error => {
       this.helperService.hideDialog();
