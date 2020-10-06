@@ -56,9 +56,17 @@
               {{(subCategory.updatedAt | date: 'short') || 'Not updated yet!'}}
             </td>
           </ng-container>
-          <ng-container matColumnDef="totalProducts">
-            <th mat-header-cell mat-sort-header *matHeaderCellDef> Total Products</th>
-            <td mat-cell *matCellDef="let subCategory"> {{subCategory.products.length}} </td>
+          <ng-container matColumnDef="tags">
+            <th mat-header-cell mat-sort-header *matHeaderCellDef> Tags</th>
+            <td mat-cell *matCellDef="let subCategory">
+              <a *ngFor="let tag of subCategory.subCategoryTags" class="badge badge-pill badge-lg  m-1 badge-dark">
+                {{tag.name}}
+              </a>
+              <a *ngIf="subCategory && subCategory.subCategoryTags.length === 0"
+                 class="badge badge-pill badge-sm m-1  badge-dark">
+                No Tags
+              </a>
+            </td>
           </ng-container>
           <ng-container matColumnDef="category">
             <th mat-header-cell mat-sort-header *matHeaderCellDef> Category</th>

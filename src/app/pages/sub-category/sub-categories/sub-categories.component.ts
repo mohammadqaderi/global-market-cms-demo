@@ -23,7 +23,7 @@ import {ActivityType} from '../../../commons/enums/activity-type.enum';
   styleUrls: ['./sub-categories.component.css']
 })
 export class SubCategoriesComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'name', 'createdAt', 'updatedAt', 'totalProducts', 'category', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'createdAt', 'updatedAt', 'tags', 'category', 'actions'];
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild('errorTemplate', {static: true}) errorTemplate: TemplateRef<any>;
