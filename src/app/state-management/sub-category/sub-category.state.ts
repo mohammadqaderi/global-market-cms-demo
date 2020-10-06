@@ -91,7 +91,9 @@ export class SubCategoryState {
     return this.subCategoryService.addTagsToSubCategory(action.id, action.payload).pipe(
       tap((addedSubCategoryTags: SubCategoryTagModel[]) => {
         const subCategory = this.getCloneSubCategory(action.id);
-        subCategory.subCategoryTags.concat(addedSubCategoryTags);
+        for (let i = 0; i < addedSubCategoryTags.length; i++) {
+          subCategory.subCategoryTags = [...subCategory.subCategoryTags, addedSubCategoryTags[i]];
+        }
         ctx.setState(patch({
           subCategories: updateItem<SubCategoryModel>(sub => sub.id === action.id, subCategory)
         }));

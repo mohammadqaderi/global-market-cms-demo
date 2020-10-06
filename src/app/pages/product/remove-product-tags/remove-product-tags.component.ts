@@ -58,6 +58,7 @@ export class RemoveProductTagsComponent implements OnInit {
 
   removeTags() {
     this.helperService.startPushing = true;
+    this.helperService.showSpinner('Removing Tags...');
     let removedTags = [];
     for (let i = 0; i < this.transitionProductTags.length; i++) {
       removedTags = [...removedTags, this.transitionProductTags[i].id];
@@ -67,9 +68,9 @@ export class RemoveProductTagsComponent implements OnInit {
       action: ActivityType.DELETING,
       description: `${this.gdService.Username} has push remove a list of tags from product: ${this.product.name}`
     }));
-    this.helperService.showSpinner('Removing Tags...');
     this.store.dispatch(new RemoveTagsFromProduct(this.product.id, {tags: removedTags})).subscribe(() => {
       this.helperService.hideDialog();
+      this.helperService.hideSpinner();
       this.helperService.openSnackbar(`Tags removed successfully from product`, 'Okay');
       this.helperService.startPushing = false;
       this.change.emit();

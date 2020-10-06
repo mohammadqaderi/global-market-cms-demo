@@ -69,6 +69,7 @@ export class RemoveSubCategoryTagsComponent implements OnInit {
     }));
     this.store.dispatch(new RemoveTagsFromSubCategory(this.subCategory.id, {tags: removedTags})).subscribe(() => {
       this.helperService.hideDialog();
+      this.helperService.hideSpinner()
       this.helperService.openSnackbar(`Tags removed successfully from sub-category`, 'Okay');
       this.helperService.startPushing = false;
       this.change.emit();
