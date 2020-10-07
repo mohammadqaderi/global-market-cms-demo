@@ -13,7 +13,7 @@ export class OrderModel {
 
   comments: string;
 
-  address: BillingAddress;
+  billingAddress: BillingAddress;
 
   shipmentDate: Date;
 
