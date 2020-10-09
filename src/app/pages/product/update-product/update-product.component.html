@@ -62,9 +62,9 @@
       </button>
     </div>
   </div>
-  <div class="row mt-2 justify-content-between">
-    <div class="col-md-4 mt-2 mb-2" *ngFor="let ref of helperService.chosenReferences; let i = index">
-      <span class="badge badge-pill badge-sm badge-dark" style="font-size: 13px; width: 250px; max-width: 250px">
+  <div class="row mt-2 ">
+    <div class="col-md-6 mt-2 mb-2" *ngFor="let ref of helperService.chosenReferences; let i = index">
+      <span class="badge badge-pill badge-sm badge-dark" style="font-size: 13px; width: auto">
        {{ref.name}} &nbsp; &nbsp; <i (click)="helperService.removeReference(ref.name)"
                                      class="fas fa-trash text-danger"
                                      style="font-size: 13px; cursor: pointer"></i>

@@ -41,16 +41,21 @@ export class AddProductComponent implements OnInit, OnDestroy {
       currentPrice: new FormControl(null, [Validators.required]),
       quantity: new FormControl(null, [Validators.required]),
     });
+    this.addProductForm.valueChanges.subscribe(() => {
+      if (this.addProductForm.value.subCategoryId) {
+        const subCategory = this.subCategories.find(sc => sc.id === +this.addProductForm.value.subCategoryId);
+        this.subCategory = subCategory;
+        this.helperService.referenceItems = [];
+        for (let i = 0; i < subCategory.products.length; i++) {
+          this.helperService.referenceItems = [...this.helperService.referenceItems, {
+            id: subCategory.products[i].id,
+            name: subCategory.products[i].name
+          }];
+        }
+      }
+    })
   }
 
-  getSubCategoryProducts() {
-    const subCategory = this.subCategories.find(sc => sc.id === +this.addProductForm.value.subCategoryId);
-    this.subCategory = subCategory;
-    this.helperService.referenceItems = [];
-    for (let i = 0; i < subCategory.products.length; i++) {
-      this.helperService.referenceItems.push({id: this.products[i].id, name: this.products[i].name});
-    }
-  }
 
   addProduct() {
     this.formData.append('name', this.addProductForm.value.name);

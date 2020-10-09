@@ -78,7 +78,8 @@ export class HelperService {
   }
 
   // prepare update references process //
-  prepareUpdateReferenceProcess(array, obj) {
+  prepareUpdateReferenceProcess(array: any, obj: any) {
+    this.referenceItems = [];
     for (let i = 0; i < array.length; i++) {
       if (array[i].id !== obj.id) {
         this.referenceItems.push({id: array[i].id, name: array[i].name});

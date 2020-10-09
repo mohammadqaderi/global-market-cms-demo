@@ -39,7 +39,7 @@
       <div class="col-lg-12">
         <div class="form-group">
           <label for="exampleFormControlSelect1">Sub Category</label>
-          <select (ngModelChange)="getSubCategoryProducts()" class="form-control" formControlName="subCategoryId"
+          <select class="form-control" formControlName="subCategoryId"
                   id="exampleFormControlSelect1">
             <option>None</option>
             <option [value]="sub.id" *ngFor="let sub of subCategories">{{sub.name}}</option>
@@ -49,11 +49,11 @@
     </div>
   </form>
   <hr *ngIf="subCategory" class="my-3">
-  <div class="row" *ngIf="subCategory">
+  <div class="row" *ngIf="helperService.referenceItems.length > 0">
     <div class="col-md-8">
       <mat-form-field class="example-full-width">
         <mat-label> Reference Product</mat-label>
-        <mat-select multiple [(ngModel)]="helperService.selectedReferences">
+        <mat-select multiple name="selectedReferences" [(ngModel)]="helperService.selectedReferences">
           <mat-option [value]="{id: ref.id, name: ref.name}"
                       *ngFor="let ref of helperService.referenceItems; let i = index">
             {{ref.name}}
