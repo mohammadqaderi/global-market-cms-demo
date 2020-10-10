@@ -62,15 +62,30 @@
       </button>
     </div>
   </div>
-  <div class="row mt-2 ">
-    <div class="col-md-6 mt-2 mb-2" *ngFor="let ref of helperService.chosenReferences; let i = index">
-      <span class="badge badge-pill badge-sm badge-dark" style="font-size: 13px; width: auto">
-       {{ref.name}} &nbsp; &nbsp; <i (click)="helperService.removeReference(ref.name)"
-                                     class="fas fa-trash text-danger"
-                                     style="font-size: 13px; cursor: pointer"></i>
-      </span>
+  <div class="container card">
+    <div class="card-body">
+      <div class="row mt-2 justify-content-center">
+        <h4 class="h4 text-center">
+          Chosen References
+        </h4>
+      </div>
+      <div class="row mt-2 ">
+        <div class="col-md-12 mt-2 mb-2"
+             *ngFor="let ref of helperService.chosenReferences; let i = index">
+          <div class="row p-2 m-2 grey lighten-2 rounded">
+            <span>{{ref.name}}</span>
+            <span class="example-spacer"></span>
+            <span (click)="helperService.removeReference(ref.name)">
+             <i class="fas fa-trash text-danger"
+                style="font-size: 23px; cursor: pointer"></i>
+        </span>
+          </div>
+          <hr class="my-2">
+        </div>
+      </div>
     </div>
   </div>
+
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button
