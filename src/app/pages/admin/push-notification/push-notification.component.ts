@@ -5,9 +5,9 @@ import {NotificationPayloadDto} from '../../../models/Notifications/classes/noti
 import {Store} from '@ngxs/store';
 import {editorConfig} from '../../../commons/constants';
 import {NotificationActions} from '../../../state-management/notification/notification.actions';
-import SendNewNotification = NotificationActions.SendNewNotification;
 import {PushClientActivity} from '../../../state-management/activity/activity.actions';
 import {ActivityType} from '../../../commons/enums/activity-type.enum';
+import SendNewNotification = NotificationActions.SendNewNotification;
 
 @Component({
   selector: 'app-push-notification',
@@ -21,6 +21,7 @@ export class PushNotificationComponent implements OnInit {
   @Input() store: Store;
   config = editorConfig;
   notificationPayloadDto: NotificationPayloadDto = new NotificationPayloadDto();
+  pureText: string[];
   @Output() change: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('errorTemplate', {static: true}) errorTemplate: TemplateRef<any>;
 
@@ -28,6 +29,8 @@ export class PushNotificationComponent implements OnInit {
   }
 
   sendNotification() {
+    const noTags = ''.concat(this.notificationPayloadDto.htmlBody);
+    this.notificationPayloadDto.plainText = noTags.replace(/<.*?>/g, '');
     this.helperService.showSpinner('Sending Notification, Please Wait...');
     this.store.dispatch(new PushClientActivity({
       user: this.gdService.User.username,

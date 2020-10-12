@@ -13,7 +13,7 @@ import ClearNotifications = NotificationActions.ClearNotifications;
 
 
 @State<NotificationStateModel>({
-  name: 'notifications',
+  name: 'notificationsData',
   defaults: {
     notifications: null,
     subscribers: null

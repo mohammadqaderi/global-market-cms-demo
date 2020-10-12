@@ -28,17 +28,6 @@ export class NavbarComponent implements OnInit {
     this.listTitles = ROUTES.filter(listTitle => listTitle);
   }
 
-  userLogout() {
-    let username = this.gdService.User.username;
-    this.store.dispatch(new PushClientActivity({
-      action: ActivityType.LOGOUT,
-      user: this.gdService.User.username,
-      description: `${username} has logout from a moment`
-    }));
-    this.gdService.userLogout().subscribe(() => {
-      this.router.navigate(['/auth/login']);
-    });
-  }
 
   getTitle() {
     var titlee = this.location.prepareExternalUrl(this.location.path());

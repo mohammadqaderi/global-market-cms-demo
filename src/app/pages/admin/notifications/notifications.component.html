@@ -26,12 +26,12 @@
           No Notifications Available!
         </h4>
       </div>
-      <mat-form-field class="example-full-width">
+      <mat-form-field *ngIf="Notifications && Notifications.length > 0" class="example-full-width">
         <mat-label>Filter</mat-label>
         <input matInput (keyup)="helperService.applyFilter(helperService.notificationsDataSource,$event)"
                placeholder="Enter Notification Name">
       </mat-form-field>
-      <div class="mat-elevation-z8">
+      <div class="mat-elevation-z8" *ngIf="Notifications && Notifications.length > 0">
         <table mat-table [dataSource]="helperService.notificationsDataSource" matSort>
           <ng-container matColumnDef="id">
             <th mat-header-cell mat-sort-header *matHeaderCellDef> Id</th>
@@ -63,7 +63,7 @@
         </span>
     </div>
     <div class="card-body">
-      <div *ngIf="Notifications && Notifications.length === 0" class="row justify-content-center mt-3 mb-3">
+      <div *ngIf="Subscribers && Subscribers.length === 0" class="row justify-content-center mt-3 mb-3">
         <h4>
           No Subscribers Available!
         </h4>
@@ -72,8 +72,7 @@
         <thead>
         <tr>
           <th scope="col">Id</th>
-          <th scope="col">Subscriber Name</th>
-          <th scope="col">Notifications</th>
+          <th scope="col">Email</th>
           <th scope="col">Actions</th>
         </tr>
         </thead>
@@ -81,10 +80,7 @@
         <tr *ngFor="let subscriber of Subscribers ; let i = index">
           <td>{{subscriber.id}}</td>
           <td>
-            {{gdService.getItemUser(null, subscriber.id)}}
-          </td>
-          <td *ngFor="let s of subscriber.subscribersNotifications; let  j = index">
-            <span>{{s.title}}</span>
+            {{subscriber.email}}
           </td>
           <td>
             <button mat-icon-button [matMenuTriggerFor]="menu">

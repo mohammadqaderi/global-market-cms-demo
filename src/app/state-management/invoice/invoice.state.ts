@@ -9,12 +9,12 @@ import FetchUserInvoices = InvoiceActions.FetchUserInvoices;
 import ClearInvoicesFromStorage = InvoiceActions.ClearInvoicesFromStorage;
 
 
-State<InvoiceStateModel>({
+@State<InvoiceStateModel>({
   name: 'invoices',
   defaults: {
     invoices: null
   }
-});
+})
 
 @Injectable()
 export class InvoiceState {

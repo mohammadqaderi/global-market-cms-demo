@@ -14,17 +14,13 @@
   <hr class="my-3">
   <div class="row ">
     <div class="col-xl-12">
-      <angular-editor [(ngModel)]="notificationPayloadDto.body" [config]="config"></angular-editor>
+      <angular-editor autofocus [(ngModel)]="notificationPayloadDto.htmlBody" [config]="config"></angular-editor>
     </div>
-  </div>
-  <hr class="my-3">
-  <div class="row">
-    {{notificationPayloadDto.body}}
   </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button
-    [disabled]="!notificationPayloadDto.body && !notificationPayloadDto.title"
+    [disabled]="!notificationPayloadDto.htmlBody && !notificationPayloadDto.title"
     mat-raised-button color="primary"
     (click)="sendNotification()"
     style="width: 120px;" type="button">
